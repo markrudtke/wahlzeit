@@ -64,9 +64,15 @@ public class CoordinateTest {
 		assertEquals(Math.sqrt(75), coord3.getDistance(coord4), 0);
 	}
 	
+	@Test (expected = NullPointerException.class)
+	public void testGetDistance_nullArgument() {
+		coord1.getDistance(null);
+	}
+	
 	@Test
 	public void testIsEqual() {
-		coord2.setCoordinate(1, 2, 3);
+		coord1.setCoordinate(69.82, 2, 3);
+		coord2.setCoordinate(69.2 + 0.62, 2, 3);
 		assertTrue(coord1.isEqual(coord2));
 		assertFalse(coord1.isEqual(coord3));
 	}
@@ -78,9 +84,10 @@ public class CoordinateTest {
 		assertFalse(coord1.equals(coord3));
 	}
 	
-	@Test (expected = ClassCastException.class)
-	public void noCoordinateShouldCauseException() {
+	@Test
+	public void testEquals_wrongArgument() {
 		Object o = new Object();
-		coord1.equals(o);
+		assertFalse(coord1.equals(o));
+		assertFalse(coord1.equals(null));
 	}
 }

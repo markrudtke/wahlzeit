@@ -6,10 +6,11 @@ public class Location {
 	private String name;
 	
 	public Location() {
-		
+		coord = new Coordinate();
 	}
 	
 	public Location(String name) {
+		coord = new Coordinate();
 		this.name = name;
 	}
 	

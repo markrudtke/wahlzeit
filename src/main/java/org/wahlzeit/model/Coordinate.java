@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 public class Coordinate {
 
+	private static final double DELTA = 0.0001;
+	
 	private double x;
 	private double y;
 	private double z;
@@ -28,6 +30,9 @@ public class Coordinate {
 		return z;
 	}
 	
+	/**
+	 * returns all cartesian coordinates of this coordinate.
+	 */
 	public double[] getCoordinate() {
 		return new double[] {x, y, z};
 	}
@@ -44,6 +49,9 @@ public class Coordinate {
 		this.z = z;
 	}
 	
+	/**
+	 * sets all cartesian coordinates of this coordinate.
+	 */
 	public void setCoordinate(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -51,7 +59,7 @@ public class Coordinate {
 	}
 	
 	/**
-	 * d(P,Q)
+	 * computes the euclidean distance d(p,q) between this coordinate and q.
 	 */
 	public double getDistance(Coordinate q) {
 		double px = this.x;
@@ -64,8 +72,13 @@ public class Coordinate {
 		return Math.sqrt(sum);
 	}
 	
+	/**
+	 * compares two coordinates and returns true if this coordinate equals q.
+	 */
 	public boolean isEqual(Coordinate q) {
-		if (this.x == q.getX() && this.y == q.getY() && this.z == q.getZ()) {
+		if (Math.abs(this.x - q.getX()) < DELTA
+				&& Math.abs(this.y - q.getY()) < DELTA
+				&& Math.abs(this.z - q.getZ()) < DELTA) {
 			return true;
 		}
 		return false;
@@ -74,7 +87,11 @@ public class Coordinate {
 	/**
 	 * forwards equals() to isEqual();
 	 */
+	@Override
 	public boolean equals(Object q) {
-		return this.isEqual((Coordinate) q);
+		if (q instanceof Coordinate) {
+			return this.isEqual((Coordinate) q);
+		}
+		return false;
 	}
 }
