@@ -8,49 +8,77 @@ public class Coordinate {
 	private double y;
 	private double z;
 	
+	/**
+	 * @methodtype constructor
+	 */
 	public Coordinate() {
 		
 	}
-	
+
+	/**
+	 * @methodtype constructor
+	 */
 	public Coordinate(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
+	/**
+	 * @methodtype get
+	 */
 	public double getX() {
 		return x;
 	}
-	
+
+	/**
+	 * @methodtype get
+	 */
 	public double getY() {
 		return y;
 	}
-	
+
+	/**
+	 * @methodtype get
+	 */
 	public double getZ() {
 		return z;
 	}
 	
 	/**
-	 * returns all cartesian coordinates of this coordinate.
+	 * Returns all cartesian coordinates of this coordinate.
+	 * 
+	 * @methodtype get
 	 */
 	public double[] getCoordinate() {
 		return new double[] {x, y, z};
 	}
-	
+
+	/**
+	 * @methodtype set
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
-	
+
+	/**
+	 * @methodtype set
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
-	
+
+	/**
+	 * @methodtype set
+	 */
 	public void setZ(double z) {
 		this.z = z;
 	}
 	
 	/**
-	 * sets all cartesian coordinates of this coordinate.
+	 * Sets all cartesian coordinates of this coordinate.
+	 * 
+	 * @methodtype set
 	 */
 	public void setCoordinate(double x, double y, double z) {
 		this.x = x;
@@ -59,7 +87,9 @@ public class Coordinate {
 	}
 	
 	/**
-	 * computes the euclidean distance d(p,q) between this coordinate and q.
+	 * Computes the euclidean distance d(p,q) between this coordinate and q.
+	 * 
+	 * @methodtype get
 	 */
 	public double getDistance(Coordinate q) {
 		double px = this.x;
@@ -73,7 +103,9 @@ public class Coordinate {
 	}
 	
 	/**
-	 * compares two coordinates and returns true if this coordinate equals q.
+	 * Compares two coordinates and returns true if this coordinate equals q.
+	 * 
+	 * @methodtype boolean query
 	 */
 	public boolean isEqual(Coordinate q) {
 		if (Math.abs(this.x - q.getX()) < DELTA
@@ -85,7 +117,9 @@ public class Coordinate {
 	}
 	
 	/**
-	 * forwards equals() to isEqual();
+	 * Forwards equals() to isEqual();
+	 * 
+	 * @methodtype boolean query
 	 */
 	@Override
 	public boolean equals(Object q) {
