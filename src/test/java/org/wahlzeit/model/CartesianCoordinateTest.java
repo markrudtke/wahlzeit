@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class CoordinateTest {
+public class CartesianCoordinateTest {
 
-	Coordinate coord1 = new Coordinate(1, 2, 3);
-	Coordinate coord2 = new Coordinate();
-	Coordinate coord3 = new Coordinate(1, 3, -2);
-	Coordinate coord4 = new Coordinate(-4, 2, 5);
+	CartesianCoordinate coord1 = new CartesianCoordinate(1, 2, 3);
+	CartesianCoordinate coord2 = new CartesianCoordinate();
+	CartesianCoordinate coord3 = new CartesianCoordinate(1, 3, -2);
+	CartesianCoordinate coord4 = new CartesianCoordinate(-4, 2, 5);
 	
 	@Test
 	public void testGetX() {
@@ -60,8 +60,31 @@ public class CoordinateTest {
 	}
 	
 	@Test
+	public void testAsCartesianCoordinate() {
+		assertEquals(coord1, coord1.asCartesianCoordinate());
+	}
+
+	@Test
+	public void testGetCartesianDistance() {
+		assertEquals(Math.sqrt(75), coord3.getCartesianDistance(coord4), 0);
+		assertNotEquals(Math.sqrt(75), coord3.getCartesianDistance(coord4.asSphericCoordinate()), 0);
+	}
+
+	@Test
+	public void testAsSphericCoordinate() {
+		assertEquals(coord1, coord1.asSphericCoordinate().asCartesianCoordinate());
+	}
+
+	@Test
+	public void testGetSphericDistance() {
+		assertEquals(Math.sqrt(75), coord3.getSphericDistance(coord4), 0);
+		assertNotEquals(Math.sqrt(75), coord3.getSphericDistance(coord4.asSphericCoordinate()), 0);
+	}
+	
+	@Test
 	public void testGetDistance() {
 		assertEquals(Math.sqrt(75), coord3.getDistance(coord4), 0);
+		assertNotEquals(Math.sqrt(75), coord3.getDistance(coord4.asSphericCoordinate()), 0);
 	}
 	
 	@Test (expected = NullPointerException.class)
@@ -75,6 +98,8 @@ public class CoordinateTest {
 		coord2.setCoordinate(69.2 + 0.62, 2, 3);
 		assertTrue(coord1.isEqual(coord2));
 		assertFalse(coord1.isEqual(coord3));
+		assertTrue(coord1.isEqual(coord2.asSphericCoordinate()));
+		assertFalse(coord1.isEqual(coord3.asSphericCoordinate()));
 	}
 	
 	@Test
@@ -82,6 +107,8 @@ public class CoordinateTest {
 		coord2.setCoordinate(1, 2, 3);
 		assertTrue(coord1.equals(coord2));
 		assertFalse(coord1.equals(coord3));
+		assertTrue(coord1.equals(coord2.asSphericCoordinate()));
+		assertFalse(coord1.equals(coord3.asSphericCoordinate()));
 	}
 	
 	@Test

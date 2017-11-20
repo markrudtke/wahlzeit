@@ -7,7 +7,7 @@ import org.junit.Test;
 public class LocationTest {
 
 	Location loc = new Location("test1");
-	Coordinate coord = new Coordinate(1, 2, 3);
+	CartesianCoordinate coord = new CartesianCoordinate(1, 2, 3);
 	
 	@Test
 	public void testGetName() {
