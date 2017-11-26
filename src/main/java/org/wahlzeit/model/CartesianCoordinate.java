@@ -1,8 +1,6 @@
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate{
-
-	private static final double DELTA = 0.0001;
+public class CartesianCoordinate extends AbstractCoordinate{
 	
 	private double x;
 	private double y;
@@ -19,9 +17,7 @@ public class CartesianCoordinate implements Coordinate{
 	 * @methodtype constructor
 	 */
 	public CartesianCoordinate(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		setCoordinate(x, y, z);
 	}
 	
 	/**
@@ -81,43 +77,17 @@ public class CartesianCoordinate implements Coordinate{
 	 * @methodtype set
 	 */
 	public void setCoordinate(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		setX(x);
+		setY(y);
+		setZ(z);
 	}
-
+	
 	/**
 	 * @methodtype conversion
 	 */
+	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
 		return this;
-	}
-
-	/**
-	 * Computes the euclidean distance d(p,q) between this coordinate and q.
-	 * 
-	 * @methodtype get
-	 */
-	public double getCartesianDistance(Coordinate q) {
-		CartesianCoordinate cc = q.asCartesianCoordinate();
-		double px = this.x;
-		double py = this.y;
-		double pz = this.z;
-		double qx = cc.getX();
-		double qy = cc.getY();
-		double qz = cc.getZ();
-		double sum = Math.pow(qx-px, 2) + Math.pow(qy-py, 2) + Math.pow(qz-pz, 2);
-		return Math.sqrt(sum);
-	}
-
-	/**
-	 * @methodtype conversion
-	 */
-	public SphericCoordinate asSphericCoordinate() {
-		double radius = Math.sqrt(x*x + y*y + z*z);
-		double latitude = Math.acos(z / radius);
-		double longitude = Math.atan(y / x);
-		return new SphericCoordinate(latitude, longitude, radius);
 	}
 
 	/**
@@ -125,8 +95,9 @@ public class CartesianCoordinate implements Coordinate{
 	 * 
 	 * @methodtype get
 	 */
+	@Override
 	public double getSphericDistance(Coordinate q) {
-		return this.asSphericCoordinate().getSphericDistance(q);
+		return this.asSphericCoordinate().getDistance(q);
 	}
 
 	/**
@@ -134,6 +105,7 @@ public class CartesianCoordinate implements Coordinate{
 	 * 
 	 * @methodtype get
 	 */
+	@Override
 	public double getDistance(Coordinate q) {
 			return this.getCartesianDistance(q);		
 	}
@@ -143,7 +115,11 @@ public class CartesianCoordinate implements Coordinate{
 	 * 
 	 * @methodtype boolean query
 	 */
+	@Override
 	public boolean isEqual(Coordinate q) {
+		if(q == null) {
+			return false;
+		}
 		CartesianCoordinate cc = q.asCartesianCoordinate();
 		if (Math.abs(this.x - cc.getX()) < DELTA
 				&& Math.abs(this.y - cc.getY()) < DELTA
@@ -152,20 +128,21 @@ public class CartesianCoordinate implements Coordinate{
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Forwards equals() to isEqual();
-	 * 
-	 * @methodtype boolean query
+	 * Generated hashCode() override.
 	 */
 	@Override
-	public boolean equals(Object q) {
-		if (q instanceof CartesianCoordinate) {
-			return this.isEqual((CartesianCoordinate) q);
-		}
-		if (q instanceof SphericCoordinate) {
-			return this.isEqual((SphericCoordinate) q);
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(z);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 }

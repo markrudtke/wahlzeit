@@ -2,22 +2,29 @@ package org.wahlzeit.model;
 
 public class Location {
 	
-	public CartesianCoordinate coord;
+	public Coordinate coord;
 	private String name;
 
 	/**
 	 * @methodtype constructor
 	 */
 	public Location() {
-		coord = new CartesianCoordinate();
+		
 	}
 
 	/**
 	 * @methodtype constructor
 	 */
 	public Location(String name) {
-		coord = new CartesianCoordinate();
 		this.name = name;
+	}
+	
+	/**
+	 * @methodtype constructor
+	 */
+	public Location(String name, Coordinate coord) {
+		this.name = name;
+		this.coord = coord;
 	}
 
 	/**
@@ -25,6 +32,13 @@ public class Location {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Coordinate getCoordinate() {
+		return coord;
 	}
 
 	/**
@@ -37,7 +51,7 @@ public class Location {
 	/**
 	 * @methodtype set
 	 */
-	public void setCoordinate(double x, double y, double z) {
-		coord = new CartesianCoordinate(x, y, z);
+	public void setCoordinate(Coordinate coord) {
+		this.coord = coord;
 	}
 }

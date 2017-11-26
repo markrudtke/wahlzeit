@@ -23,7 +23,7 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * Hidden singleton instance; needs to be initialized from the outside.
 	 */
 	public static void initialize() {
-		getInstance(); // drops result due to getInstance() side-effects
+		GuitarPhotoFactory.getInstance(); // drops result due to getInstance() side-effects
 	}
 
 	/**
@@ -56,7 +56,8 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	/**
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createGuitarPhoto() {
+	@Override
+	public GuitarPhoto createPhoto() {
 		return new GuitarPhoto();
 	}
 
@@ -65,7 +66,8 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * 
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createGuitarPhoto(PhotoId id) {
+	@Override
+	public GuitarPhoto createPhoto(PhotoId id) {
 		return new GuitarPhoto(id);
 	}
 	
@@ -74,7 +76,7 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * 
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createGuitarPhoto(String brand, String model, int noStrings) {
+	public GuitarPhoto createPhoto(String brand, String model, int noStrings) {
 		return new GuitarPhoto(brand, model, noStrings);
 	}
 	
@@ -83,7 +85,7 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * 
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createGuitarPhoto(PhotoId id, String brand, String model, int noStrings) {
+	public GuitarPhoto createPhoto(PhotoId id, String brand, String model, int noStrings) {
 		return new GuitarPhoto(id, brand, model, noStrings);
 	}
 

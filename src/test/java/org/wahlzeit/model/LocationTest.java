@@ -6,23 +6,33 @@ import org.junit.Test;
 
 public class LocationTest {
 
-	Location loc = new Location("test1");
-	CartesianCoordinate coord = new CartesianCoordinate(1, 2, 3);
+	CartesianCoordinate coord1 = new CartesianCoordinate(1, 2, 3);
+	SphericCoordinate coord2 = new SphericCoordinate(4, 5, 6);
+	Location loc1 = new Location("test1", coord1);
+	Location loc2 = new Location("test2");
+	Location loc3 = new Location();
 	
 	@Test
 	public void testGetName() {
-		assertEquals("test1", loc.getName());
+		assertEquals("test1", loc1.getName());
+	}
+	
+	@Test
+	public void testGetCoordinate() {
+		assertEquals(coord1, loc1.getCoordinate());
 	}
 	
 	@Test
 	public void testSetName() {
-		loc.setName("test2");
-		assertEquals("test2", loc.getName());
+		loc3.setName("test3");
+		assertEquals("test3", loc3.getName());
 	}
 	
 	@Test
 	public void testSetCoordinate() {
-		loc.setCoordinate(1, 2, 3);
-		assertEquals(coord, loc.coord);
+		loc2.setCoordinate(coord2);
+		loc3.setCoordinate(coord1);
+		assertEquals(coord2, loc2.getCoordinate());
+		assertEquals(coord1, loc3.getCoordinate());
 	}
 }

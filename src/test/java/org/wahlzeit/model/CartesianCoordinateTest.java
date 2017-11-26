@@ -6,115 +6,107 @@ import org.junit.Test;
 
 public class CartesianCoordinateTest {
 
-	CartesianCoordinate coord1 = new CartesianCoordinate(1, 2, 3);
-	CartesianCoordinate coord2 = new CartesianCoordinate();
-	CartesianCoordinate coord3 = new CartesianCoordinate(1, 3, -2);
-	CartesianCoordinate coord4 = new CartesianCoordinate(-4, 2, 5);
+	CartesianCoordinate cc1 = new CartesianCoordinate(1, 2, 3);
+	CartesianCoordinate cc2 = new CartesianCoordinate();
+	CartesianCoordinate cc3 = new CartesianCoordinate(1, 3, -2);
+	CartesianCoordinate cc4 = new CartesianCoordinate(-4, 2, 5);
+	CartesianCoordinate cc5 = new CartesianCoordinate(1, 3, 2);
+	CartesianCoordinate cc6 = new CartesianCoordinate(4, 2, 5);
 	
 	@Test
 	public void testGetX() {
-		assertEquals(1, coord1.getX(), 0);
+		assertTrue(1 == cc1.getX());
 	}
 	
 	@Test
 	public void testGetY() {
-		assertEquals(2, coord1.getY(), 0);
+		assertTrue(2 == cc1.getY());
 	}
 	
 	@Test
 	public void testGetZ() {
-		assertEquals(3, coord1.getZ(), 0);
+		assertTrue(3 == cc1.getZ());
 	}
 	
 	@Test
 	public void testGetCoordinate() {
-		assertEquals(1, coord1.getCoordinate()[0], 0);
-		assertEquals(2, coord1.getCoordinate()[1], 0);
-		assertEquals(3, coord1.getCoordinate()[2], 0);
+		assertTrue(1 == cc1.getCoordinate()[0]);
+		assertTrue(2 == cc1.getCoordinate()[1]);
+		assertTrue(3 == cc1.getCoordinate()[2]);
 	}
 	
 	@Test
 	public void testSetX() {
-		coord2.setX(4);
-		assertEquals(4, coord2.getX(), 0);
+		cc2.setX(4);
+		assertTrue(4 == cc2.getX());
 	}
 	
 	@Test
 	public void testSetY() {
-		coord2.setY(5);
-		assertEquals(5, coord2.getY(), 0);
+		cc2.setY(5);
+		assertTrue(5 == cc2.getY());
 	}
 	
 	@Test
 	public void testSetZ() {
-		coord2.setZ(6);
-		assertEquals(6, coord2.getZ(), 0);
+		cc2.setZ(6);
+		assertTrue(6 == cc2.getZ());
 	}
 	
 	@Test
 	public void testSetCoordinate() {
-		coord2.setCoordinate(7, 8, 9);
-		assertEquals(7, coord2.getCoordinate()[0], 0);
-		assertEquals(8, coord2.getCoordinate()[1], 0);
-		assertEquals(9, coord2.getCoordinate()[2], 0);
+		cc2.setCoordinate(7, 8, 9);
+		assertTrue(7 == cc2.getCoordinate()[0]);
+		assertTrue(8 == cc2.getCoordinate()[1]);
+		assertTrue(9 == cc2.getCoordinate()[2]);
 	}
 	
 	@Test
 	public void testAsCartesianCoordinate() {
-		assertEquals(coord1, coord1.asCartesianCoordinate());
+		assertTrue(cc1.equals(cc1.asCartesianCoordinate()));
 	}
 
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void testGetCartesianDistance() {
-		assertEquals(Math.sqrt(75), coord3.getCartesianDistance(coord4), 0);
-		assertNotEquals(Math.sqrt(75), coord3.getCartesianDistance(coord4.asSphericCoordinate()), 0);
+		assertTrue(Math.sqrt(75) == cc3.getCartesianDistance(cc4));
+		cc3.getCartesianDistance(null);
 	}
 
 	@Test
 	public void testAsSphericCoordinate() {
-		assertEquals(coord1, coord1.asSphericCoordinate().asCartesianCoordinate());
+		assertTrue(cc1.equals(cc1.asSphericCoordinate().asCartesianCoordinate()));
 	}
 
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void testGetSphericDistance() {
-		assertEquals(Math.sqrt(75), coord3.getSphericDistance(coord4), 0);
-		assertNotEquals(Math.sqrt(75), coord3.getSphericDistance(coord4.asSphericCoordinate()), 0);
+		assertTrue(cc5.asSphericCoordinate().getDistance(cc6) == cc5.getSphericDistance(cc6));
+		cc3.getSphericDistance(null);
 	}
 	
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void testGetDistance() {
-		assertEquals(Math.sqrt(75), coord3.getDistance(coord4), 0);
-		assertNotEquals(Math.sqrt(75), coord3.getDistance(coord4.asSphericCoordinate()), 0);
-	}
-	
-	@Test (expected = NullPointerException.class)
-	public void testGetDistance_nullArgument() {
-		coord1.getDistance(null);
+		assertTrue(cc5.getCartesianDistance(cc6) == cc5.getDistance(cc6));
+		cc1.getDistance(null);
 	}
 	
 	@Test
 	public void testIsEqual() {
-		coord1.setCoordinate(69.82, 2, 3);
-		coord2.setCoordinate(69.2 + 0.62, 2, 3);
-		assertTrue(coord1.isEqual(coord2));
-		assertFalse(coord1.isEqual(coord3));
-		assertTrue(coord1.isEqual(coord2.asSphericCoordinate()));
-		assertFalse(coord1.isEqual(coord3.asSphericCoordinate()));
+		cc1.setCoordinate(69.82, 2, 3);
+		cc2.setCoordinate(69.2 + 0.62, 2, 3);
+		assertTrue(cc1.isEqual(cc1));
+		assertTrue(cc1.isEqual(cc2));
+		assertFalse(cc1.isEqual(cc3));
+		assertFalse(cc1.isEqual(null));
+		assertTrue(cc1.isEqual(cc2.asSphericCoordinate()));
 	}
 	
 	@Test
 	public void testEquals() {
-		coord2.setCoordinate(1, 2, 3);
-		assertTrue(coord1.equals(coord2));
-		assertFalse(coord1.equals(coord3));
-		assertTrue(coord1.equals(coord2.asSphericCoordinate()));
-		assertFalse(coord1.equals(coord3.asSphericCoordinate()));
-	}
-	
-	@Test
-	public void testEquals_wrongArgument() {
-		Object o = new Object();
-		assertFalse(coord1.equals(o));
-		assertFalse(coord1.equals(null));
+		cc2.setCoordinate(1, 2, 3);
+		assertTrue(cc1.equals(cc1));
+		assertTrue(cc1.equals(cc2));
+		assertFalse(cc1.equals(cc3));
+		assertFalse(cc1.equals(null));
+		assertTrue(cc1.equals(cc2.asSphericCoordinate()));
 	}
 }

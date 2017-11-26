@@ -25,8 +25,8 @@ public class GuitarPhotoFactoryTest {
 	public void testCreateGuitarPhoto() {
 		GuitarPhotoFactory gpf = GuitarPhotoFactory.getInstance();
 		PhotoId id = new PhotoId(1234);
-		GuitarPhoto p1 = gpf.createGuitarPhoto();
-		GuitarPhoto p2 = gpf.createGuitarPhoto(id);
+		GuitarPhoto p1 = gpf.createPhoto();
+		GuitarPhoto p2 = gpf.createPhoto(id);
 		assertTrue(gpf instanceof GuitarPhotoFactory);
 		assertTrue(p1 instanceof GuitarPhoto);
 		assertTrue(p2 instanceof GuitarPhoto);
