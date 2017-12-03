@@ -5,26 +5,51 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected static final double DELTA = 0.0001;
 	
 	/**
+	 * @post !Double.isInfinite(x) && !Double.isNaN(x)
+	 * 		&& !Double.isInfinite(y) && !Double.isNaN(y) 
+	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z)
 	 * @methodtype conversion
 	 */
 	public CartesianCoordinate asCartesianCoordinate() {
 		SphericCoordinate sc = this.asSphericCoordinate();
-		double x = sc.getRadius() * Math.sin(sc.getLatitude()) * Math.cos(sc.getLongitude());
-		double y = sc.getRadius() * Math.sin(sc.getLatitude()) * Math.sin(sc.getLongitude());
-		double z = sc.getRadius() * Math.cos(sc.getLatitude());
-		return new CartesianCoordinate(x, y, z);
+		CartesianCoordinate result = doAsCartesianCoordinate(sc);
+		
+		assertIsValidDouble(result.getX());
+		assertIsValidDouble(result.getY());
+		assertIsValidDouble(result.getZ());
+		
+		return result;
+	}
+	
+	/**
+	 * @methodtype conversion
+	 * @methodproperty primitive
+	 */
+	protected CartesianCoordinate doAsCartesianCoordinate (SphericCoordinate sc) {
+		double x = sc.getRadius() * Math.sin(Math.toRadians(sc.getLatitude())) * Math.cos(Math.toRadians(sc.getLongitude()));
+		double y = sc.getRadius() * Math.sin(Math.toRadians(sc.getLatitude())) * Math.sin(Math.toRadians(sc.getLongitude()));
+		double z = sc.getRadius() * Math.cos(Math.toRadians(sc.getLatitude()));
+		CartesianCoordinate result = new CartesianCoordinate(x, y, z);
+		return result;
 	}
 	
 	/**
 	 * Computes the euclidean distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	public double getCartesianDistance(Coordinate q) {
-		assertIsNotNull(q);
+		assertIsNonNullArgument(q);
+		
 		CartesianCoordinate p = this.asCartesianCoordinate();
 		CartesianCoordinate cc = q.asCartesianCoordinate();
-		return doGetCartesianDistance(p, cc);
+		double result = doGetCartesianDistance(p, cc);
+		
+		assertIsValidDouble(result);
+		
+		return result;
 	}
 	
 	/**
@@ -44,25 +69,50 @@ public abstract class AbstractCoordinate implements Coordinate {
 	
 	/**
 	 * @methodtype conversion
+	 * @post !Double.isInfinite(latitude) && !Double.isNaN(latitude)
+	 * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude) 
+	 * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
 	 */
 	public SphericCoordinate asSphericCoordinate() {
 		CartesianCoordinate cc = this.asCartesianCoordinate();
+		SphericCoordinate result = doAsSphericCoordinate(cc);
+		
+		assertIsValidDouble(result.getLatitude());
+		assertIsValidDouble(result.getLongitude());
+		assertIsValidDouble(result.getRadius());
+		
+		return result;
+	}
+	
+	/**
+	 * @methodtype conversion
+	 * @methodproperty primitive
+	 */
+	protected SphericCoordinate doAsSphericCoordinate (CartesianCoordinate cc) {
 		double radius = Math.sqrt(Math.pow(cc.getX(), 2) + Math.pow(cc.getY(), 2) + Math.pow(cc.getZ(), 2));
-		double latitude = Math.acos(cc.getZ() / radius);
-		double longitude = Math.atan(cc.getY() / cc.getX());
-		return new SphericCoordinate(latitude, longitude, radius);
+		double latitude = Math.toDegrees(Math.acos(cc.getZ() / radius));
+		double longitude = Math.toDegrees(Math.atan2(cc.getY() , cc.getX()));
+		SphericCoordinate result = new SphericCoordinate(latitude, longitude, radius);
+		return result;
 	}
 	
 	/**
 	 * Computes the spherical distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	public double getSphericDistance(Coordinate q) {
-		assertIsNotNull(q);
+		assertIsNonNullArgument(q);
+		
 		SphericCoordinate p = this.asSphericCoordinate();
 		SphericCoordinate sc = q.asSphericCoordinate();
-		return doGetSphericDistance(p, sc);
+		double result = doGetSphericDistance(p, sc);
+		
+		assertIsValidDouble(result);
+		
+		return result;
 	}
 	
 	/**
@@ -81,15 +131,6 @@ public abstract class AbstractCoordinate implements Coordinate {
  				Math.cos(pPhi) * Math.cos(qPhi) * Math.pow(Math.sin(theta / 2), 2)
  				));
  		return p.getRadius() * sigma;
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsNotNull(Coordinate coord) {
-		if(coord == null) {
-			throw new IllegalArgumentException();
-		}
 	}
 	
 	public abstract double getDistance(Coordinate q);
@@ -113,5 +154,22 @@ public abstract class AbstractCoordinate implements Coordinate {
 			return this.isEqual((Coordinate) o);
 		}
 		return false;
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	protected void assertIsValidDouble(double d) {
+		assert !Double.isInfinite(d);
+		assert !Double.isNaN(d);
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	protected void assertIsNonNullArgument(Coordinate coord) throws IllegalArgumentException {
+		if(coord == null) {
+			throw new IllegalArgumentException("A Coordinate must not be null!");
+		}
 	}
 }

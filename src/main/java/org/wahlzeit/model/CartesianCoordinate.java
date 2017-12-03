@@ -1,5 +1,10 @@
 package org.wahlzeit.model;
 
+/**
+ * @inv !Double.isInfinite(x) && !Double.isNaN(x)
+ * 		&& !Double.isInfinite(y) && !Double.isNaN(y)
+ * 		&& !Double.isInfinite(z) && !Double.isNaN(z)
+ */
 public class CartesianCoordinate extends AbstractCoordinate{
 	
 	private double x;
@@ -10,34 +15,45 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype constructor
 	 */
 	public CartesianCoordinate() {
-		
+		assertClassInvariants();
 	}
 
 	/**
+	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
+	 * 		&& !Double.isInfinite(y) && !Double.isNaN(y) 
+	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z) 
 	 * @methodtype constructor
 	 */
 	public CartesianCoordinate(double x, double y, double z) {
-		setCoordinate(x, y, z);
+		assertClassInvariants();
+		
+		assertIsValidDouble(x);
+		assertIsValidDouble(y);
+		assertIsValidDouble(z);
+		
+		setCoordinate(x, y, z);		
+		
+		assertClassInvariants();
 	}
 	
 	/**
 	 * @methodtype get
 	 */
-	public double getX() {
+	public double getX() {		
 		return x;
 	}
 
 	/**
 	 * @methodtype get
 	 */
-	public double getY() {
+	public double getY() {		
 		return y;
 	}
 
 	/**
 	 * @methodtype get
 	 */
-	public double getZ() {
+	public double getZ() {		
 		return z;
 	}
 	
@@ -46,40 +62,96 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * 
 	 * @methodtype get
 	 */
-	public double[] getCoordinate() {
+	public double[] getCoordinate() {		
 		return new double[] {x, y, z};
 	}
 
 	/**
+	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
 	 * @methodtype set
 	 */
 	public void setX(double x) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(x);
+		
+		doSetX(x);
+		
+		assertClassInvariants();
+	}
+	
+	/**
+	 * @methodtype set
+	 * @methodproperty primitive
+	 */
+	private void doSetX(double x) {
 		this.x = x;
 	}
 
 	/**
+	 * @pre !Double.isInfinite(y) && !Double.isNaN(y)
 	 * @methodtype set
 	 */
 	public void setY(double y) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(y);
+		
+		doSetY(y);
+		
+		assertClassInvariants();
+	}
+	
+	/**
+	 * @methodtype set
+	 * @methodproperty primitive
+	 */
+	private void doSetY(double y) {
 		this.y = y;
 	}
 
 	/**
+	 * @pre !Double.isInfinite(z) && !Double.isNaN(z)
 	 * @methodtype set
 	 */
 	public void setZ(double z) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(z);
+		
+		doSetZ(z);
+		
+		assertClassInvariants();
+	}
+	
+	/**
+	 * @methodtype set
+	 * @methodproperty primitive
+	 */
+	private void doSetZ(double z) {
 		this.z = z;
 	}
 	
 	/**
 	 * Sets all cartesian coordinates of this coordinate.
 	 * 
+	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
+	 * 		&& !Double.isInfinite(y) && !Double.isNaN(y) 
+	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z) 
 	 * @methodtype set
 	 */
 	public void setCoordinate(double x, double y, double z) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(x);
+		assertIsValidDouble(y);
+		assertIsValidDouble(z);
+		
 		setX(x);
 		setY(y);
 		setZ(z);
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -91,23 +163,83 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	}
 
 	/**
+	 * Computes the euclidean distance d(p,q) between this coordinate and q.
+	 *
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
+	 * @methodtype get
+	 */
+	@Override
+	public double getCartesianDistance(Coordinate q) {
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = super.getCartesianDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
+	}
+
+	/**
+	 * @post return != null && this.isEqual(return.asCartesianCoordinate())
+	 * @methodtype conversion
+	 */
+	@Override
+	public SphericCoordinate asSphericCoordinate() {
+		assertClassInvariants();
+		
+		SphericCoordinate result = super.asSphericCoordinate();
+		
+		assertIsNonNullArgument(result);
+		assertIsCorrectConversion(result);
+		
+		assertClassInvariants();
+		return result;
+	}
+	
+	/**
 	 * Computes the spherical distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	@Override
 	public double getSphericDistance(Coordinate q) {
-		return this.asSphericCoordinate().getDistance(q);
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = this.asSphericCoordinate().getDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
 	}
-
+	
 	/**
 	 * Computes the distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	@Override
 	public double getDistance(Coordinate q) {
-			return this.getCartesianDistance(q);		
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = this.getCartesianDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
 	}
 	
 	/**
@@ -117,16 +249,18 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 */
 	@Override
 	public boolean isEqual(Coordinate q) {
+		assertClassInvariants();
+		
 		if(q == null) {
 			return false;
 		}
 		CartesianCoordinate cc = q.asCartesianCoordinate();
-		if (Math.abs(this.x - cc.getX()) < DELTA
+		boolean result = (Math.abs(this.x - cc.getX()) < DELTA
 				&& Math.abs(this.y - cc.getY()) < DELTA
-				&& Math.abs(this.z - cc.getZ()) < DELTA) {
-			return true;
-		}
-		return false;
+				&& Math.abs(this.z - cc.getZ()) < DELTA);
+		
+		assertClassInvariants();
+		return result;
 	}
 
 	/**
@@ -134,6 +268,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 */
 	@Override
 	public int hashCode() {
+		assertClassInvariants();
+		
 		final int prime = 31;
 		int result = 1;
 		long temp;
@@ -143,6 +279,24 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		
+		assertClassInvariants();
 		return result;
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertClassInvariants() {
+		assertIsValidDouble(x);
+		assertIsValidDouble(y);
+		assertIsValidDouble(z);
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertIsCorrectConversion(SphericCoordinate sc) {
+		assert this.isEqual(doAsCartesianCoordinate(sc));
 	}
 }

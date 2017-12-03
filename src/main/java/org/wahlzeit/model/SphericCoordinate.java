@@ -1,5 +1,13 @@
 package org.wahlzeit.model;
 
+/**
+ * @inv !Double.isInfinite(latitude) && !Double.isNaN(latitude)
+ * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude)
+ * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
+ * 		&& latitude >= 0 && latitude <= 180
+ * 		&& longitude >= -180 && longitude <= 180
+ * 		&& radius >= 0
+ */
 public class SphericCoordinate extends AbstractCoordinate {
 	
 	private double latitude;
@@ -10,16 +18,33 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype constructor
 	 */
 	public SphericCoordinate() {
-		
+		assertClassInvariants();
 	}
 
 	/**
 	 * Latitude, longitude and radius must be measured in degrees.
 	 * 
+	 * @pre !Double.isInfinite(latitude) && !Double.isNaN(latitude)
+	 * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude)
+	 * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
+	 * 		&& latitude >= 0 && latitude <= 180
+	 * 		&& longitude >= -180 && longitude <= 180
+	 * 		&& radius >= 0
 	 * @methodtype constructor
 	 */
 	public SphericCoordinate(double latitude, double longitude, double radius) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(latitude);
+		assertIsValidDouble(longitude);
+		assertIsValidDouble(radius);
+		assertIsValidLatitude(latitude);
+		assertIsValidLongitude(longitude);
+		assertIsValidRadius(radius);
+		
 		setCoordinate(latitude, longitude, radius);
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -55,11 +80,19 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * Latitude must be measured in degrees.
 	 * 
+	 * @pre !Double.isInfinite(latitude) && !Double.isNaN(latitude)
+	 * 		&& latitude >= 0 && latitude <= 180
 	 * @methodtype set
 	 */
 	public void setLatitude(double latitude) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(latitude);
 		assertIsValidLatitude(latitude);
+		
 		doSetLatitude(latitude);
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -73,11 +106,19 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * Longitude must be measured in degrees.
 	 * 
+	 * @pre !Double.isInfinite(longitude) && !Double.isNaN(longitude)
+	 * 		&& longitude >= -180 && longitude <= 180
 	 * @methodtype set
 	 */
 	public void setLongitude(double longitude) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(longitude);
 		assertIsValidLongitude(longitude);
+		
 		doSetLongitude(longitude);
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -91,11 +132,19 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * Radius must be measured in degrees.
 	 * 
+	 * @pre !Double.isInfinite(radius) && !Double.isNaN(radius)
+	 * 		&& radius >= 0
 	 * @methodtype set
 	 */
 	public void setRadius(double radius) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(radius);
 		assertIsValidRadius(radius);
+		
 		doSetRadius(radius);
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -109,49 +158,67 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * Sets all spheric coordinates of this coordinate.
 	 * 
+	 * @pre !Double.isInfinite(latitude) && !Double.isNaN(latitude)
+	 * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude)
+	 * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
+	 * 		&& latitude >= 0 && latitude <= 180
+	 * 		&& longitude >= -180 && longitude <= 180
+	 * 		&& radius >= 0
 	 * @methodtype set
 	 */
 	public void setCoordinate(double latitude, double longitude, double radius) {
+		assertClassInvariants();
+		
+		assertIsValidDouble(latitude);
+		assertIsValidDouble(longitude);
+		assertIsValidDouble(radius);
+		assertIsValidLatitude(latitude);
+		assertIsValidLongitude(longitude);
+		assertIsValidRadius(radius);
+		
 		setLatitude(latitude);
 		setLongitude(longitude);
 		setRadius(radius);
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsValidLatitude(double latitude) {
-		if(latitude < 0 || latitude > 180) {
-			throw new IllegalArgumentException("Latitude value (degrees) has to be: 0 <= latitude <= 180");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsValidLongitude(double longitude) {
-		if(longitude < -180 || longitude > 180) {
-			throw new IllegalArgumentException("Longitude value (degrees) has to be: -180 <= longitude <= 180");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsValidRadius(double radius) {
-		if(radius < 0) {
-			throw new IllegalArgumentException("Radius value has to be: 0 <= radius");
-		}
+		
+		assertClassInvariants();
 	}
 
 	/**
+	 * @post return != null && this.isEqual(return.asSphericCoordinate())
+	 * @methodtype conversion
+	 */
+	@Override
+	public CartesianCoordinate asCartesianCoordinate() {
+		assertClassInvariants();
+		
+		CartesianCoordinate result = super.asCartesianCoordinate();
+		
+		assertIsNonNullArgument(result);
+		assertIsCorrectConversion(result);
+		
+		assertClassInvariants();
+		return result;
+	}
+	
+	/**
 	 * Computes the euclidean distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	@Override
 	public double getCartesianDistance(Coordinate q) {
-		return this.asCartesianCoordinate().getDistance(q);
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = this.asCartesianCoordinate().getDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
 	}
 	
 	/**
@@ -161,15 +228,47 @@ public class SphericCoordinate extends AbstractCoordinate {
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
 	}
+	
+	/**
+	 * Computes the spherical distance d(p,q) between this coordinate and q.
+	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
+	 * @methodtype get
+	 */
+	@Override
+	public double getSphericDistance(Coordinate q) {
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = super.getSphericDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
+	}
 
 	/**
 	 * Computes the distance d(p,q) between this coordinate and q.
 	 * 
+	 * @pre q != null
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
 	 * @methodtype get
 	 */
 	@Override
 	public double getDistance(Coordinate q) {
-		return this.getSphericDistance(q);
+		assertClassInvariants();
+		
+		assertIsNonNullArgument(q);
+		
+		double result = this.getSphericDistance(q);
+		
+		assertIsValidDouble(result);
+		
+		assertClassInvariants();
+		return result;
 	}
 
 	/**
@@ -179,16 +278,18 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public boolean isEqual(Coordinate q) {
+		assertClassInvariants();
+		
 		if(q == null) {
 			return false;
 		}
 		SphericCoordinate sc = q.asSphericCoordinate();
-		if (Math.abs(this.latitude - sc.getLatitude()) < DELTA
+		boolean result = (Math.abs(this.latitude - sc.getLatitude()) < DELTA
 				&& Math.abs(this.longitude - sc.getLongitude()) < DELTA
-				&& Math.abs(this.radius - sc.getRadius()) < DELTA) {
-			return true;
-		}
-		return false;
+				&& Math.abs(this.radius - sc.getRadius()) < DELTA);
+		
+		assertClassInvariants();
+		return result;
 	}
 
 	/**
@@ -196,6 +297,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	@Override
 	public int hashCode() {
+		assertClassInvariants();
+		
 		final int prime = 31;
 		int result = 1;
 		long temp;
@@ -205,6 +308,54 @@ public class SphericCoordinate extends AbstractCoordinate {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(radius);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		
+		assertClassInvariants();
 		return result;
-	}	
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertClassInvariants() {
+		assertIsValidDouble(latitude);
+		assertIsValidDouble(longitude);
+		assertIsValidDouble(radius);
+		assertIsValidLatitude(latitude);
+		assertIsValidLongitude(longitude);
+		assertIsValidRadius(radius);
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertIsCorrectConversion(CartesianCoordinate cc) {
+		assert this.isEqual(doAsSphericCoordinate(cc));
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertIsValidLatitude(double latitude) throws IllegalArgumentException {
+		if(latitude < 0 || latitude > 180) {
+			throw new IllegalArgumentException("Latitude value (degrees) has to be: 0 <= latitude <= 180");
+		}
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertIsValidLongitude(double longitude) throws IllegalArgumentException{
+		if(longitude < -180 || longitude > 180) {
+			throw new IllegalArgumentException("Longitude value (degrees) has to be: -180 <= longitude <= 180");
+		}
+	}
+	
+	/**
+	 * @methodtype assertion
+	 */
+	private void assertIsValidRadius(double radius) throws IllegalArgumentException{
+		if(radius < 0) {
+			throw new IllegalArgumentException("Radius value has to be: 0 <= radius");
+		}
+	}
 }

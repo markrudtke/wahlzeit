@@ -69,7 +69,7 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testAsCartesianCoordinate() {
-//		assertTrue(sc1.equals(sc1.asCartesianCoordinate().asSphericCoordinate()));
+		assertTrue(sc1.equals(sc1.asCartesianCoordinate().asSphericCoordinate()));
 		assertTrue(cc1.equals(cc1.asSphericCoordinate().asCartesianCoordinate()));
 	}
 
@@ -104,7 +104,7 @@ public class SphericCoordinateTest {
 		assertTrue(sc1.isEqual(sc2));
 		assertFalse(sc1.isEqual(sc3));
 		assertFalse(sc1.isEqual(null));
-//		assertTrue(sc1.isEqual(sc2.asCartesianCoordinate()));
+		assertTrue(sc1.isEqual(sc2.asCartesianCoordinate()));
 	}
 	
 	@Test
@@ -114,6 +114,6 @@ public class SphericCoordinateTest {
 		assertTrue(sc1.equals(sc2));
 		assertFalse(sc1.equals(sc3));
 		assertFalse(sc1.equals(null));
-//		assertTrue(sc1.equals(sc2.asCartesianCoordinate()));
+		assertTrue(sc1.equals(sc2.asCartesianCoordinate()));
 	}
 }

@@ -13,6 +13,12 @@ public class CartesianCoordinateTest {
 	CartesianCoordinate cc5 = new CartesianCoordinate(1, 3, 2);
 	CartesianCoordinate cc6 = new CartesianCoordinate(4, 2, 5);
 	
+/*	@Test (expected = IllegalArgumentException.class)
+	public void test() {
+		CartesianCoordinate c = new CartesianCoordinate(0, 0, 0);
+		c.asSphericCoordinate();
+	}
+*/	
 	@Test
 	public void testGetX() {
 		assertTrue(1 == cc1.getX());
