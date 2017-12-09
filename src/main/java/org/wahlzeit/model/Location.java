@@ -5,13 +5,13 @@ package org.wahlzeit.model;
  */
 public class Location {
 	
-	public Coordinate coord;
+	public Coordinate coordinate;
 	private String name = "";
 
 	/**
 	 * @methodtype constructor
 	 */
-	public Location() {
+	public Location() throws IllegalArgumentException {
 		assertClassInvariants();
 	}
 
@@ -19,7 +19,7 @@ public class Location {
 	 * @pre name != null
 	 * @methodtype constructor
 	 */
-	public Location(String name) {
+	public Location(String name) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(name);
@@ -33,7 +33,7 @@ public class Location {
 	 * @pre name != null && coord != null 
 	 * @methodtype constructor
 	 */
-	public Location(String name, Coordinate coord) {
+	public Location(String name, Coordinate coord) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(name);
@@ -56,14 +56,14 @@ public class Location {
 	 * @methodtype get
 	 */
 	public Coordinate getCoordinate() {
-		return coord;
+		return coordinate;
 	}
 
 	/**
 	 * @pre name != null
 	 * @methodtype set
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(name);
@@ -85,7 +85,7 @@ public class Location {
 	 * @pre coord != null 
 	 * @methodtype set
 	 */
-	public void setCoordinate(Coordinate coord) {
+	public void setCoordinate(Coordinate coord) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(coord);
@@ -100,13 +100,13 @@ public class Location {
 	 * @methodproperty primitive
 	 */
 	private void doSetCoordinate(Coordinate coord) {
-		this.coord = coord;
+		coordinate = coord;
 	}
 	
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertClassInvariants() {
+	private void assertClassInvariants() throws IllegalArgumentException {
 		assertIsNonNullArgument(name);
 	}
 	

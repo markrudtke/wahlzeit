@@ -10,7 +10,9 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z)
 	 * @methodtype conversion
 	 */
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws IllegalArgumentException {
+		assertClassInvariants();
+		
 		SphericCoordinate sc = this.asSphericCoordinate();
 		CartesianCoordinate result = doAsCartesianCoordinate(sc);
 		
@@ -18,6 +20,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 		assertIsValidDouble(result.getY());
 		assertIsValidDouble(result.getZ());
 		
+		assertClassInvariants();
 		return result;
 	}
 	
@@ -37,10 +40,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * Computes the euclidean distance d(p,q) between this coordinate and q.
 	 * 
 	 * @pre q != null
-	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return) && return >= 0
 	 * @methodtype get
 	 */
-	public double getCartesianDistance(Coordinate q) {
+	public double getCartesianDistance(Coordinate q) throws IllegalArgumentException {
+		assertClassInvariants();
+		
 		assertIsNonNullArgument(q);
 		
 		CartesianCoordinate p = this.asCartesianCoordinate();
@@ -48,7 +53,9 @@ public abstract class AbstractCoordinate implements Coordinate {
 		double result = doGetCartesianDistance(p, cc);
 		
 		assertIsValidDouble(result);
+		assertIsValidDistance(result);
 		
+		assertClassInvariants();
 		return result;
 	}
 	
@@ -73,7 +80,9 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude) 
 	 * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
 	 */
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws IllegalArgumentException {
+		assertClassInvariants();
+		
 		CartesianCoordinate cc = this.asCartesianCoordinate();
 		SphericCoordinate result = doAsSphericCoordinate(cc);
 		
@@ -81,6 +90,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 		assertIsValidDouble(result.getLongitude());
 		assertIsValidDouble(result.getRadius());
 		
+		assertClassInvariants();
 		return result;
 	}
 	
@@ -100,10 +110,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * Computes the spherical distance d(p,q) between this coordinate and q.
 	 * 
 	 * @pre q != null
-	 * @post !Double.isInfinite(return) && !Double.isNaN(return)
+	 * @post !Double.isInfinite(return) && !Double.isNaN(return) && return >= 0
 	 * @methodtype get
 	 */
-	public double getSphericDistance(Coordinate q) {
+	public double getSphericDistance(Coordinate q) throws IllegalArgumentException {
+		assertClassInvariants();
+		
 		assertIsNonNullArgument(q);
 		
 		SphericCoordinate p = this.asSphericCoordinate();
@@ -111,7 +123,9 @@ public abstract class AbstractCoordinate implements Coordinate {
 		double result = doGetSphericDistance(p, sc);
 		
 		assertIsValidDouble(result);
+		assertIsValidDistance(result);
 		
+		assertClassInvariants();
 		return result;
 	}
 	
@@ -133,35 +147,52 @@ public abstract class AbstractCoordinate implements Coordinate {
  		return p.getRadius() * sigma;
 	}
 	
-	public abstract double getDistance(Coordinate q);
+	public abstract double getDistance(Coordinate q) throws IllegalArgumentException;
 	
-	public abstract boolean isEqual(Coordinate q);
+	public abstract boolean isEqual(Coordinate q) throws IllegalArgumentException;
 	
 	/**
-	 * Forwards equals() to isEqual();
+	 * Forwards equals() to isEqual().
 	 * 
 	 * @methodtype boolean query
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o) throws IllegalArgumentException {
+		assertClassInvariants();
+		
+		boolean result = false;
 		if(o == null) {
-			return false;
+			result = false;
 		}
 		if(o == this) {
-			return true;
+			result = true;
 		}
 		if (o instanceof Coordinate) {
-			return this.isEqual((Coordinate) o);
+			result = this.isEqual((Coordinate) o);
 		}
-		return false;
+		
+		assertClassInvariants();
+		return result;
+	}
+	
+	protected abstract void assertClassInvariants() throws IllegalArgumentException;
+	
+	/**
+	 * @methodtype assertion
+	 */
+	protected void assertIsValidDouble(double d) throws IllegalArgumentException {
+		if(Double.isInfinite(d) || Double.isNaN(d)) {
+			throw new IllegalArgumentException("A double value must be a number and must not be infinite!");
+		}
 	}
 	
 	/**
 	 * @methodtype assertion
 	 */
-	protected void assertIsValidDouble(double d) {
-		assert !Double.isInfinite(d);
-		assert !Double.isNaN(d);
+	protected void assertIsValidDistance(double d) throws IllegalArgumentException {
+		if(d < 0) {
+			throw new IllegalArgumentException("A distance must not be negative!");
+		}
 	}
 	
 	/**

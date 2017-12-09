@@ -16,18 +16,16 @@ public class GuitarPhoto extends Photo {
 	/**
 	 * @methodtype constructor
 	 */
-	public GuitarPhoto() {
+	public GuitarPhoto() throws IllegalArgumentException {
 		super();
-		
 		assertClassInvariants();
 	}
 	
 	/**
 	 * @methodtype constructor
 	 */
-	public GuitarPhoto(PhotoId myId) {
+	public GuitarPhoto(PhotoId myId) throws IllegalArgumentException {
 		super(myId);
-		
 		assertClassInvariants();
 	}
 	
@@ -36,7 +34,7 @@ public class GuitarPhoto extends Photo {
 	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
 	 * @methodtype constructor
 	 */
-	public GuitarPhoto(String brand, String model, int noStrings) {
+	public GuitarPhoto(String brand, String model, int noStrings) throws IllegalArgumentException {
 		super();
 		assertClassInvariants();
 		
@@ -54,7 +52,7 @@ public class GuitarPhoto extends Photo {
 	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
 	 * @methodtype constructor
 	 */
-	public GuitarPhoto(PhotoId myId, String brand, String model, int noStrings) {
+	public GuitarPhoto(PhotoId myId, String brand, String model, int noStrings) throws IllegalArgumentException {
 		super(myId);
 		assertClassInvariants();
 		
@@ -92,7 +90,7 @@ public class GuitarPhoto extends Photo {
 	 * @pre brand != null
 	 * @methodtype set
 	 */
-	public void setBrand(String brand) {
+	public void setBrand(String brand) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(brand);
@@ -114,7 +112,7 @@ public class GuitarPhoto extends Photo {
 	 * @pres model != null
 	 * @methodtype set
 	 */
-	public void setModel(String model) {
+	public void setModel(String model) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(model);
@@ -136,7 +134,7 @@ public class GuitarPhoto extends Photo {
 	 * @pre noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
 	 * @methodtype set
 	 */
-	public void setNoStrings(int noStrings) {
+	public void setNoStrings(int noStrings) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsValidInt(noStrings);
@@ -159,7 +157,7 @@ public class GuitarPhoto extends Photo {
 	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
 	 * @methodtype set
 	 */
-	public void setGuitarPhoto(String brand, String model, int noStrings) {
+	public void setGuitarPhoto(String brand, String model, int noStrings) throws IllegalArgumentException {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(brand);
@@ -176,7 +174,7 @@ public class GuitarPhoto extends Photo {
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertClassInvariants() {
+	private void assertClassInvariants() throws IllegalArgumentException {
 		assertIsNonNullArgument(brand);
 		assertIsNonNullArgument(model);
 		assertIsValidInt(noStrings);
@@ -185,9 +183,10 @@ public class GuitarPhoto extends Photo {
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertIsValidInt(int i) {
-		assert i <= Integer.MAX_VALUE;
-		assert i >= Integer.MIN_VALUE;
+	private void assertIsValidInt(int i) throws IllegalArgumentException {
+		if(i > Integer.MAX_VALUE || i < Integer.MIN_VALUE) {
+			throw new IllegalArgumentException("An int value has to be: Integer.MIN_VALUE <= i <= Integer.MAX_VALUE");
+		}
 	}
 	
 	/**
