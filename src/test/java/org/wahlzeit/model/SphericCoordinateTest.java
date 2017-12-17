@@ -6,13 +6,13 @@ import org.junit.Test;
 
 public class SphericCoordinateTest {
 	
-	SphericCoordinate sc1 = new SphericCoordinate(1, 2, 3);
-	SphericCoordinate sc2 = new SphericCoordinate();
-	SphericCoordinate sc3 = new SphericCoordinate(1, 90, 90);
-	SphericCoordinate sc4 = new SphericCoordinate(2, 90, 90);
-	SphericCoordinate sc5 = new SphericCoordinate(1, 2, 3);
-	SphericCoordinate sc6 = new SphericCoordinate(4, 5, 6);
-	CartesianCoordinate cc1 = new CartesianCoordinate(1, 2, 3);
+	SphericCoordinate sc1 = SphericCoordinate.getCoordinate(1, 2, 3);
+	SphericCoordinate sc2 = SphericCoordinate.getCoordinate(0, 0, 0);
+	SphericCoordinate sc3 = SphericCoordinate.getCoordinate(1, 90, 90);
+	SphericCoordinate sc4 = SphericCoordinate.getCoordinate(2, 90, 90);
+	SphericCoordinate sc5 = SphericCoordinate.getCoordinate(1, 2, 3);
+	SphericCoordinate sc6 = SphericCoordinate.getCoordinate(4, 5, 6);
+	CartesianCoordinate cc1 = CartesianCoordinate.getCoordinate(1, 2, 3);
 	
 	@Test
 	public void testGetLatitude() {
@@ -31,14 +31,14 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testGetCoordinate() {
-		assertTrue(1 == sc1.getCoordinate()[0]);
-		assertTrue(2 == sc1.getCoordinate()[1]);
-		assertTrue(3 == sc1.getCoordinate()[2]);
+		assertTrue(1 == sc1.getCoordinate(1, 2, 3).getLatitude());
+		assertTrue(2 == sc1.getCoordinate(1, 2, 3).getLongitude());
+		assertTrue(3 == sc1.getCoordinate(1, 2, 3).getRadius());
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testSetLatitude() {
-		sc2.setLatitude(4);
+		sc2 = sc2.setLatitude(4);
 		assertTrue(4 == sc2.getLatitude());
 		sc2.setLatitude(-1);
 		sc2.setLatitude(181);
@@ -46,7 +46,7 @@ public class SphericCoordinateTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testSetLongitude() {
-		sc2.setLongitude(5);
+		sc2 = sc2.setLongitude(5);
 		assertTrue(5 == sc2.getLongitude());
 		sc2.setLongitude(-181);
 		sc2.setLongitude(181);
@@ -54,17 +54,17 @@ public class SphericCoordinateTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testSetRadius() {
-		sc2.setRadius(6);
+		sc2 = sc2.setRadius(6);
 		assertTrue(6 == sc2.getRadius());
 		sc2.setRadius(-1);
 	}
 	
 	@Test
 	public void testSetCoordinate() {
-		sc2.setCoordinate(7, 8, 9);
-		assertTrue(7 == sc2.getCoordinate()[0]);
-		assertTrue(8 == sc2.getCoordinate()[1]);
-		assertTrue(9 == sc2.getCoordinate()[2]);
+		sc2 = sc2.setCoordinate(7, 8, 9);
+		assertTrue(7 == sc2.getLatitude());
+		assertTrue(8 == sc2.getLongitude());
+		assertTrue(9 == sc2.getRadius());
 	}
 	
 	@Test
@@ -98,8 +98,8 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testIsEqual() {
-		sc1.setCoordinate(69.82, 2, 3);
-		sc2.setCoordinate(69.2 + 0.62, 2, 3);
+		sc1 = sc1.setCoordinate(69.82, 2, 3);
+		sc2 = sc2.setCoordinate(69.2 + 0.62, 2, 3);
 		assertTrue(sc1.isEqual(sc1));
 		assertTrue(sc1.isEqual(sc2));
 		assertFalse(sc1.isEqual(sc3));
@@ -109,7 +109,7 @@ public class SphericCoordinateTest {
 	
 	@Test
 	public void testEquals() {
-		sc2.setCoordinate(1, 2, 3);
+		sc2 = sc2.setCoordinate(1, 2, 3);
 		assertTrue(sc1.equals(sc1));
 		assertTrue(sc1.equals(sc2));
 		assertFalse(sc1.equals(sc3));

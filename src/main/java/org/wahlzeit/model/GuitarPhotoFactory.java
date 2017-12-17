@@ -57,26 +57,19 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * @methodtype factory
 	 */
 	@Override
-	public GuitarPhoto createPhoto() throws IllegalStateException {
-		try {
-			return new GuitarPhoto();
-		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Cannot create photo!");
-		}
+	public GuitarPhoto createPhoto() {
+		return new GuitarPhoto();
 	}
 
 	/**
 	 * Creates a new guitar photo with the specified id
+	 * @throws GuitarPhotoInstantiationException 
 	 * 
 	 * @methodtype factory
 	 */
 	@Override
-	public GuitarPhoto createPhoto(PhotoId id) throws IllegalStateException {
-		try {
-			return new GuitarPhoto(id);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Cannot create photo!");
-		}
+	public GuitarPhoto createPhoto(PhotoId id) {
+		return new GuitarPhoto(id);
 	}
 	
 	/**
@@ -84,12 +77,8 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * 
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createPhoto(String brand, String model, int noStrings) throws IllegalArgumentException {
-		try {
-			return new GuitarPhoto(brand, model, noStrings);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid parameters. Cannot create photo!");
-		}
+	public GuitarPhoto createPhoto(String brand, String model, int noStrings) {
+		return new GuitarPhoto(brand, model, noStrings);
 	}
 	
 	/**
@@ -97,12 +86,8 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	 * 
 	 * @methodtype factory
 	 */
-	public GuitarPhoto createPhoto(PhotoId id, String brand, String model, int noStrings) throws IllegalArgumentException {
-		try {
-			return new GuitarPhoto(id, brand, model, noStrings);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("Invalid parameters. Cannot create photo!");
-		}
+	public GuitarPhoto createPhoto(PhotoId id, String brand, String model, int noStrings) {
+		return new GuitarPhoto(id, brand, model, noStrings);
 	}
 
 }

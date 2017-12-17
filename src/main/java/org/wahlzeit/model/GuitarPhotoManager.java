@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import com.google.appengine.api.images.Image;
+
 public class GuitarPhotoManager extends PhotoManager{
 
 	protected static final GuitarPhotoManager instance = new GuitarPhotoManager();
@@ -9,6 +11,18 @@ public class GuitarPhotoManager extends PhotoManager{
 	 */
 	public GuitarPhotoManager() {
 		super();
+	}
+	
+	/**
+	 *
+	 */
+	@Override
+	public Photo createPhoto(String filename, Image uploadedImage) throws GuitarPhotoInstantiationException {
+		try {
+			return super.createPhoto(filename, uploadedImage);
+		} catch (Exception ex) {
+			throw new GuitarPhotoInstantiationException("Cannot create guitar photo!");
+		}
 	}
 
 }

@@ -10,15 +10,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z)
 	 * @methodtype conversion
 	 */
-	public CartesianCoordinate asCartesianCoordinate() throws IllegalArgumentException {
+	public CartesianCoordinate asCartesianCoordinate() {
 		assertClassInvariants();
 		
 		SphericCoordinate sc = this.asSphericCoordinate();
 		CartesianCoordinate result = doAsCartesianCoordinate(sc);
 		
-		assertIsValidDouble(result.getX());
-		assertIsValidDouble(result.getY());
-		assertIsValidDouble(result.getZ());
+		AssertionUtil.assertIsValidDouble(result.getX());
+		AssertionUtil.assertIsValidDouble(result.getY());
+		AssertionUtil.assertIsValidDouble(result.getZ());
 		
 		assertClassInvariants();
 		return result;
@@ -32,7 +32,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 		double x = sc.getRadius() * Math.sin(Math.toRadians(sc.getLatitude())) * Math.cos(Math.toRadians(sc.getLongitude()));
 		double y = sc.getRadius() * Math.sin(Math.toRadians(sc.getLatitude())) * Math.sin(Math.toRadians(sc.getLongitude()));
 		double z = sc.getRadius() * Math.cos(Math.toRadians(sc.getLatitude()));
-		CartesianCoordinate result = new CartesianCoordinate(x, y, z);
+		CartesianCoordinate result = CartesianCoordinate.getCoordinate(x, y, z);
 		return result;
 	}
 	
@@ -43,7 +43,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @post !Double.isInfinite(return) && !Double.isNaN(return) && return >= 0
 	 * @methodtype get
 	 */
-	public double getCartesianDistance(Coordinate q) throws IllegalArgumentException {
+	public double getCartesianDistance(Coordinate q) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(q);
@@ -52,8 +52,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 		CartesianCoordinate cc = q.asCartesianCoordinate();
 		double result = doGetCartesianDistance(p, cc);
 		
-		assertIsValidDouble(result);
-		assertIsValidDistance(result);
+		AssertionUtil.assertIsValidDouble(result);
+		AssertionUtil.assertIsValidDistance(result);
 		
 		assertClassInvariants();
 		return result;
@@ -80,15 +80,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude) 
 	 * 		&& !Double.isInfinite(radius) && !Double.isNaN(radius)
 	 */
-	public SphericCoordinate asSphericCoordinate() throws IllegalArgumentException {
+	public SphericCoordinate asSphericCoordinate() {
 		assertClassInvariants();
 		
 		CartesianCoordinate cc = this.asCartesianCoordinate();
 		SphericCoordinate result = doAsSphericCoordinate(cc);
 		
-		assertIsValidDouble(result.getLatitude());
-		assertIsValidDouble(result.getLongitude());
-		assertIsValidDouble(result.getRadius());
+		AssertionUtil.assertIsValidDouble(result.getLatitude());
+		AssertionUtil.assertIsValidDouble(result.getLongitude());
+		AssertionUtil.assertIsValidDouble(result.getRadius());
 		
 		assertClassInvariants();
 		return result;
@@ -102,7 +102,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 		double radius = Math.sqrt(Math.pow(cc.getX(), 2) + Math.pow(cc.getY(), 2) + Math.pow(cc.getZ(), 2));
 		double latitude = Math.toDegrees(Math.acos(cc.getZ() / radius));
 		double longitude = Math.toDegrees(Math.atan2(cc.getY() , cc.getX()));
-		SphericCoordinate result = new SphericCoordinate(latitude, longitude, radius);
+		SphericCoordinate result = SphericCoordinate.getCoordinate(latitude, longitude, radius);
 		return result;
 	}
 	
@@ -113,7 +113,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @post !Double.isInfinite(return) && !Double.isNaN(return) && return >= 0
 	 * @methodtype get
 	 */
-	public double getSphericDistance(Coordinate q) throws IllegalArgumentException {
+	public double getSphericDistance(Coordinate q) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(q);
@@ -122,8 +122,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 		SphericCoordinate sc = q.asSphericCoordinate();
 		double result = doGetSphericDistance(p, sc);
 		
-		assertIsValidDouble(result);
-		assertIsValidDistance(result);
+		AssertionUtil.assertIsValidDouble(result);
+		AssertionUtil.assertIsValidDistance(result);
 		
 		assertClassInvariants();
 		return result;
@@ -147,9 +147,15 @@ public abstract class AbstractCoordinate implements Coordinate {
  		return p.getRadius() * sigma;
 	}
 	
-	public abstract double getDistance(Coordinate q) throws IllegalArgumentException;
+	/**
+	 *
+	 */
+	public abstract double getDistance(Coordinate q);
 	
-	public abstract boolean isEqual(Coordinate q) throws IllegalArgumentException;
+	/**
+	 *
+	 */
+	public abstract boolean isEqual(Coordinate q);
 	
 	/**
 	 * Forwards equals() to isEqual().
@@ -157,7 +163,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @methodtype boolean query
 	 */
 	@Override
-	public boolean equals(Object o) throws IllegalArgumentException {
+	public boolean equals(Object o) {
 		assertClassInvariants();
 		
 		boolean result = false;
@@ -175,30 +181,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return result;
 	}
 	
-	protected abstract void assertClassInvariants() throws IllegalArgumentException;
+	/**
+	 *
+	 */
+	protected abstract void assertClassInvariants();
 	
 	/**
 	 * @methodtype assertion
 	 */
-	protected void assertIsValidDouble(double d) throws IllegalArgumentException {
-		if(Double.isInfinite(d) || Double.isNaN(d)) {
-			throw new IllegalArgumentException("A double value must be a number and must not be infinite!");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	protected void assertIsValidDistance(double d) throws IllegalArgumentException {
-		if(d < 0) {
-			throw new IllegalArgumentException("A distance must not be negative!");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	protected void assertIsNonNullArgument(Coordinate coord) throws IllegalArgumentException {
+	protected void assertIsNonNullArgument(Coordinate coord) {
 		if(coord == null) {
 			throw new IllegalArgumentException("A Coordinate must not be null!");
 		}

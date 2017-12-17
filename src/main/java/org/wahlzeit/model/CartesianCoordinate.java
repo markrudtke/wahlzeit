@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
+
 /**
  * @inv !Double.isInfinite(x) && !Double.isNaN(x)
  * 		&& !Double.isInfinite(y) && !Double.isNaN(y)
@@ -7,16 +9,11 @@ package org.wahlzeit.model;
  */
 public class CartesianCoordinate extends AbstractCoordinate{
 	
-	private double x;
-	private double y;
-	private double z;
+	private final double x;
+	private final double y;
+	private final double z;
 	
-	/**
-	 * @methodtype constructor
-	 */
-	public CartesianCoordinate() throws IllegalArgumentException {
-		assertClassInvariants();
-	}
+	private static final HashMap<Integer, CartesianCoordinate> coordinates = new HashMap<>();
 
 	/**
 	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
@@ -24,14 +21,16 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z) 
 	 * @methodtype constructor
 	 */
-	public CartesianCoordinate(double x, double y, double z) throws IllegalArgumentException {
+	private CartesianCoordinate(double x, double y, double z) {
 		assertClassInvariants();
 		
-		assertIsValidDouble(x);
-		assertIsValidDouble(y);
-		assertIsValidDouble(z);
+		AssertionUtil.assertIsValidDouble(x);
+		AssertionUtil.assertIsValidDouble(y);
+		AssertionUtil.assertIsValidDouble(z);
 		
-		setCoordinate(x, y, z);		
+		this.x = x;
+		this.y = y;
+		this.z = z;		
 		
 		assertClassInvariants();
 	}
@@ -58,100 +57,116 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	}
 	
 	/**
-	 * Returns all cartesian coordinates of this coordinate.
-	 * 
-	 * @methodtype get
+	 * Returns a cartesian coordinate with the given parameters.
 	 */
-	public double[] getCoordinate() {		
-		return new double[] {x, y, z};
+	public static CartesianCoordinate getCoordinate(double x, double y, double z) {
+		int key = (new CartesianCoordinate(x, y, z)).hashCode();
+		CartesianCoordinate result = coordinates.get(key);
+		if(result == null) {
+			synchronized (coordinates) {
+				result = coordinates.get(key);
+				if(result == null) {
+					result = new CartesianCoordinate(x, y, z);
+					coordinates.put(key, result);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
 	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
-	 * @methodtype set
+	 * @post return != null
 	 */
-	public void setX(double x) throws IllegalArgumentException {
+	public CartesianCoordinate setX(double x) {
 		assertClassInvariants();
 		
-		assertIsValidDouble(x);
+		AssertionUtil.assertIsValidDouble(x);
 		
-		doSetX(x);
+		CartesianCoordinate result = doSetX(x);
+		
+		assertIsNonNullArgument(result);
 		
 		assertClassInvariants();
+		return result;
 	}
 	
 	/**
-	 * @methodtype set
 	 * @methodproperty primitive
 	 */
-	private void doSetX(double x) {
-		this.x = x;
+	private CartesianCoordinate doSetX(double x) {
+		return getCoordinate(x, y, z);
 	}
 
 	/**
 	 * @pre !Double.isInfinite(y) && !Double.isNaN(y)
-	 * @methodtype set
+	 * @post return != null
 	 */
-	public void setY(double y) throws IllegalArgumentException {
+	public CartesianCoordinate setY(double y) {
 		assertClassInvariants();
 		
-		assertIsValidDouble(y);
+		AssertionUtil.assertIsValidDouble(y);
 		
-		doSetY(y);
+		CartesianCoordinate result = doSetY(y);
+		
+		assertIsNonNullArgument(result);
 		
 		assertClassInvariants();
+		return result;
 	}
 	
 	/**
-	 * @methodtype set
 	 * @methodproperty primitive
 	 */
-	private void doSetY(double y) {
-		this.y = y;
+	private CartesianCoordinate doSetY(double y) {
+		return getCoordinate(x, y, z);
 	}
 
 	/**
 	 * @pre !Double.isInfinite(z) && !Double.isNaN(z)
-	 * @methodtype set
+	 * @post return != null
 	 */
-	public void setZ(double z) throws IllegalArgumentException {
+	public CartesianCoordinate setZ(double z) {
 		assertClassInvariants();
 		
-		assertIsValidDouble(z);
+		AssertionUtil.assertIsValidDouble(z);
 		
-		doSetZ(z);
+		CartesianCoordinate result = doSetZ(z);
+		
+		assertIsNonNullArgument(result);
 		
 		assertClassInvariants();
+		return result;
 	}
 	
 	/**
-	 * @methodtype set
 	 * @methodproperty primitive
 	 */
-	private void doSetZ(double z) {
-		this.z = z;
+	private CartesianCoordinate doSetZ(double z) {
+		return getCoordinate(x, y, z);
 	}
 	
 	/**
-	 * Sets all cartesian coordinates of this coordinate.
+	 * Returns a new cartesian coordinate with the given parameters.
 	 * 
 	 * @pre !Double.isInfinite(x) && !Double.isNaN(x)
 	 * 		&& !Double.isInfinite(y) && !Double.isNaN(y) 
 	 * 		&& !Double.isInfinite(z) && !Double.isNaN(z) 
-	 * @methodtype set
+	 * @post return != null
 	 */
-	public void setCoordinate(double x, double y, double z) throws IllegalArgumentException {
+	public CartesianCoordinate setCoordinate(double x, double y, double z) {
 		assertClassInvariants();
 		
-		assertIsValidDouble(x);
-		assertIsValidDouble(y);
-		assertIsValidDouble(z);
+		AssertionUtil.assertIsValidDouble(x);
+		AssertionUtil.assertIsValidDouble(y);
+		AssertionUtil.assertIsValidDouble(z);
 		
-		setX(x);
-		setY(y);
-		setZ(z);
+		CartesianCoordinate result = getCoordinate(x, y, z);
+		
+		assertIsNonNullArgument(result);
 		
 		assertClassInvariants();
+		return result;
 	}
 	
 	/**
@@ -170,15 +185,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype get
 	 */
 	@Override
-	public double getCartesianDistance(Coordinate q) throws IllegalArgumentException {
+	public double getCartesianDistance(Coordinate q) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(q);
 		
 		double result = super.getCartesianDistance(q);
 		
-		assertIsValidDouble(result);
-		assertIsValidDistance(result);
+		AssertionUtil.assertIsValidDouble(result);
+		AssertionUtil.assertIsValidDistance(result);
 		
 		assertClassInvariants();
 		return result;
@@ -189,7 +204,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype conversion
 	 */
 	@Override
-	public SphericCoordinate asSphericCoordinate() throws IllegalArgumentException {
+	public SphericCoordinate asSphericCoordinate() {
 		assertClassInvariants();
 		
 		SphericCoordinate result = super.asSphericCoordinate();
@@ -209,15 +224,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype get
 	 */
 	@Override
-	public double getSphericDistance(Coordinate q) throws IllegalArgumentException {
+	public double getSphericDistance(Coordinate q) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(q);
 		
 		double result = this.asSphericCoordinate().getDistance(q);
 		
-		assertIsValidDouble(result);
-		assertIsValidDistance(result);
+		AssertionUtil.assertIsValidDouble(result);
+		AssertionUtil.assertIsValidDistance(result);
 		
 		assertClassInvariants();
 		return result;
@@ -231,15 +246,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype get
 	 */
 	@Override
-	public double getDistance(Coordinate q) throws IllegalArgumentException {
+	public double getDistance(Coordinate q) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(q);
 		
 		double result = this.getCartesianDistance(q);
 		
-		assertIsValidDouble(result);
-		assertIsValidDistance(result);
+		AssertionUtil.assertIsValidDouble(result);
+		AssertionUtil.assertIsValidDistance(result);
 		
 		assertClassInvariants();
 		return result;
@@ -251,7 +266,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype boolean query
 	 */
 	@Override
-	public boolean isEqual(Coordinate q) throws IllegalArgumentException {
+	public boolean isEqual(Coordinate q) {
 		assertClassInvariants();
 		
 		if(q == null) {
@@ -270,7 +285,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * Generated hashCode() override.
 	 */
 	@Override
-	public int hashCode() throws IllegalArgumentException {
+	public int hashCode() {
 		assertClassInvariants();
 		
 		final int prime = 31;
@@ -291,16 +306,16 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype assertion
 	 */
 	@Override
-	protected void assertClassInvariants() throws IllegalArgumentException {
-		assertIsValidDouble(x);
-		assertIsValidDouble(y);
-		assertIsValidDouble(z);
+	protected void assertClassInvariants() {
+		AssertionUtil.assertIsValidDouble(x);
+		AssertionUtil.assertIsValidDouble(y);
+		AssertionUtil.assertIsValidDouble(z);
 	}
 	
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertIsCorrectConversion(SphericCoordinate sc) throws IllegalArgumentException {
+	private void assertIsCorrectConversion(SphericCoordinate sc) {
 		if(!this.isEqual(doAsCartesianCoordinate(sc))) {
 			throw new IllegalArgumentException("A coordinate must be converted correctly!");
 		}

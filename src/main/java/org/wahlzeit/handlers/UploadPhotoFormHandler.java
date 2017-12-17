@@ -23,6 +23,7 @@ package org.wahlzeit.handlers;
 import com.google.appengine.api.images.Image;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.GuitarPhotoInstantiationException;
 import org.wahlzeit.model.GuitarPhotoManager;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
@@ -74,7 +75,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 		}
 
 		try {
-			PhotoManager pm = GuitarPhotoManager.getInstance();
+			GuitarPhotoManager pm = (GuitarPhotoManager) GuitarPhotoManager.getInstance();
 			String fileName = us.getAsString(args, "fileName");
 			User user = (User) us.getClient();
 			Image uploadedImage = user.getUploadedImage();
@@ -95,10 +96,10 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 					addParameter("ID", photo.getId().asString()).toString());
 
 			AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
-		} catch (Exception ex) {
-			log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
+		} catch (GuitarPhotoInstantiationException ex) {
+			log.warning(LogBuilder.createSystemMessage().addException("creating guitar photo failed", ex).toString());
 			us.setMessage(config.getPhotoUploadFailed());
-		}
+		} 
 
 		return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
 	}

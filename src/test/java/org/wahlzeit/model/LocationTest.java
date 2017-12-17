@@ -6,8 +6,8 @@ import org.junit.Test;
 
 public class LocationTest {
 
-	CartesianCoordinate coord1 = new CartesianCoordinate(1, 2, 3);
-	SphericCoordinate coord2 = new SphericCoordinate(4, 5, 6);
+	CartesianCoordinate coord1 = CartesianCoordinate.getCoordinate(1, 2, 3);
+	SphericCoordinate coord2 = SphericCoordinate.getCoordinate(4, 5, 6);
 	Location loc1 = new Location("test1", coord1);
 	Location loc2 = new Location("test2");
 	Location loc3 = new Location();

@@ -6,19 +6,13 @@ import org.junit.Test;
 
 public class CartesianCoordinateTest {
 
-	CartesianCoordinate cc1 = new CartesianCoordinate(1, 2, 3);
-	CartesianCoordinate cc2 = new CartesianCoordinate();
-	CartesianCoordinate cc3 = new CartesianCoordinate(1, 3, -2);
-	CartesianCoordinate cc4 = new CartesianCoordinate(-4, 2, 5);
-	CartesianCoordinate cc5 = new CartesianCoordinate(1, 3, 2);
-	CartesianCoordinate cc6 = new CartesianCoordinate(4, 2, 5);
-	
-/*	@Test (expected = IllegalArgumentException.class)
-	public void test() {
-		CartesianCoordinate c = new CartesianCoordinate(0, 0, 0);
-		c.asSphericCoordinate();
-	}
-*/	
+	CartesianCoordinate cc1 = CartesianCoordinate.getCoordinate(1, 2, 3);
+	CartesianCoordinate cc2 = CartesianCoordinate.getCoordinate(0,0,0);
+	CartesianCoordinate cc3 = CartesianCoordinate.getCoordinate(1, 3, -2);
+	CartesianCoordinate cc4 = CartesianCoordinate.getCoordinate(-4, 2, 5);
+	CartesianCoordinate cc5 = CartesianCoordinate.getCoordinate(1, 3, 2);
+	CartesianCoordinate cc6 = CartesianCoordinate.getCoordinate(4, 2, 5);
+		
 	@Test
 	public void testGetX() {
 		assertTrue(1 == cc1.getX());
@@ -36,35 +30,35 @@ public class CartesianCoordinateTest {
 	
 	@Test
 	public void testGetCoordinate() {
-		assertTrue(1 == cc1.getCoordinate()[0]);
-		assertTrue(2 == cc1.getCoordinate()[1]);
-		assertTrue(3 == cc1.getCoordinate()[2]);
+		assertTrue(1 == cc1.getCoordinate(1, 2, 3).getX());
+		assertTrue(2 == cc1.getCoordinate(1, 2, 3).getY());
+		assertTrue(3 == cc1.getCoordinate(1, 2, 3).getZ());
 	}
 	
 	@Test
 	public void testSetX() {
-		cc2.setX(4);
+		cc2 = cc2.setX(4);
 		assertTrue(4 == cc2.getX());
 	}
 	
 	@Test
 	public void testSetY() {
-		cc2.setY(5);
+		cc2 = cc2.setY(5);
 		assertTrue(5 == cc2.getY());
 	}
 	
 	@Test
 	public void testSetZ() {
-		cc2.setZ(6);
+		cc2 = cc2.setZ(6);
 		assertTrue(6 == cc2.getZ());
 	}
 	
 	@Test
 	public void testSetCoordinate() {
-		cc2.setCoordinate(7, 8, 9);
-		assertTrue(7 == cc2.getCoordinate()[0]);
-		assertTrue(8 == cc2.getCoordinate()[1]);
-		assertTrue(9 == cc2.getCoordinate()[2]);
+		cc2 = cc2.setCoordinate(7, 8, 9);
+		assertTrue(7 == cc2.getX());
+		assertTrue(8 == cc2.getY());
+		assertTrue(9 == cc2.getZ());
 	}
 	
 	@Test
@@ -97,8 +91,8 @@ public class CartesianCoordinateTest {
 	
 	@Test
 	public void testIsEqual() {
-		cc1.setCoordinate(69.82, 2, 3);
-		cc2.setCoordinate(69.2 + 0.62, 2, 3);
+		cc1 = cc1.setCoordinate(69.82, 2, 3);
+		cc2 = cc2.setCoordinate(69.2 + 0.62, 2, 3);
 		assertTrue(cc1.isEqual(cc1));
 		assertTrue(cc1.isEqual(cc2));
 		assertFalse(cc1.isEqual(cc3));
@@ -108,7 +102,7 @@ public class CartesianCoordinateTest {
 	
 	@Test
 	public void testEquals() {
-		cc2.setCoordinate(1, 2, 3);
+		cc2 = cc2.setCoordinate(1, 2, 3);
 		assertTrue(cc1.equals(cc1));
 		assertTrue(cc1.equals(cc2));
 		assertFalse(cc1.equals(cc3));

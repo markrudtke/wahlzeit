@@ -11,7 +11,7 @@ public class Location {
 	/**
 	 * @methodtype constructor
 	 */
-	public Location() throws IllegalArgumentException {
+	public Location() {
 		assertClassInvariants();
 	}
 
@@ -19,10 +19,10 @@ public class Location {
 	 * @pre name != null
 	 * @methodtype constructor
 	 */
-	public Location(String name) throws IllegalArgumentException {
+	public Location(String name) {
 		assertClassInvariants();
 		
-		assertIsNonNullArgument(name);
+		AssertionUtil.assertIsNonNullArgument(name);
 		
 		setName(name);
 		
@@ -33,10 +33,10 @@ public class Location {
 	 * @pre name != null && coord != null 
 	 * @methodtype constructor
 	 */
-	public Location(String name, Coordinate coord) throws IllegalArgumentException {
+	public Location(String name, Coordinate coord) {
 		assertClassInvariants();
 		
-		assertIsNonNullArgument(name);
+		AssertionUtil.assertIsNonNullArgument(name);
 		assertIsNonNullArgument(coord);
 		
 		setName(name);
@@ -63,10 +63,10 @@ public class Location {
 	 * @pre name != null
 	 * @methodtype set
 	 */
-	public void setName(String name) throws IllegalArgumentException {
+	public void setName(String name) {
 		assertClassInvariants();
 		
-		assertIsNonNullArgument(name);
+		AssertionUtil.assertIsNonNullArgument(name);
 		
 		doSetName(name);
 		
@@ -85,7 +85,7 @@ public class Location {
 	 * @pre coord != null 
 	 * @methodtype set
 	 */
-	public void setCoordinate(Coordinate coord) throws IllegalArgumentException {
+	public void setCoordinate(Coordinate coord) {
 		assertClassInvariants();
 		
 		assertIsNonNullArgument(coord);
@@ -106,23 +106,14 @@ public class Location {
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertClassInvariants() throws IllegalArgumentException {
-		assertIsNonNullArgument(name);
+	private void assertClassInvariants() {
+		AssertionUtil.assertIsNonNullArgument(name);
 	}
 	
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertIsNonNullArgument(String s) throws IllegalArgumentException {
-		if(s == null) {
-			throw new IllegalArgumentException("A Location name must not be null!");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsNonNullArgument(Coordinate c) throws IllegalArgumentException {
+	private void assertIsNonNullArgument(Coordinate c) {
 		if(c == null) {
 			throw new IllegalArgumentException("A Location coordinate must not be null!");
 		}
