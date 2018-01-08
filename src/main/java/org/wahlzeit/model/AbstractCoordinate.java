@@ -1,5 +1,13 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.PatternInstance;
+
+@PatternInstance(
+		patternName = "Template Method",
+		participants = {
+				"AbstractClass"
+		}
+)
 public abstract class AbstractCoordinate implements Coordinate {
 
 	protected static final double DELTA = 0.0001;

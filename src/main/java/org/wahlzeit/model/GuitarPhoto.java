@@ -1,11 +1,18 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.PatternInstance;
 import com.googlecode.objectify.annotation.Subclass;
 
 /**
  * @inv brand != null && model != null
  * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
  */
+@PatternInstance(
+		patternName = "Abstract Factory",
+		participants = {
+				"ConcreteProduct"
+		}
+)
 @Subclass
 public class GuitarPhoto extends Photo {
 

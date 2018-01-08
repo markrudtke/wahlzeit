@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 import java.util.HashMap;
 
+import org.wahlzeit.utils.PatternInstance;
+
 /**
  * @inv !Double.isInfinite(latitude) && !Double.isNaN(latitude)
  * 		&& !Double.isInfinite(longitude) && !Double.isNaN(longitude)
@@ -10,6 +12,18 @@ import java.util.HashMap;
  * 		&& longitude >= -180 && longitude <= 180
  * 		&& radius >= 0
  */
+@PatternInstance(
+		patternName = "Template Method",
+		participants = {
+				"ConcreteClass B"
+		}
+)
+/*@PatternInstance(
+		patternName = "Value Object",
+		participants = {
+				"ValueObject"
+		}
+)*/
 public class SphericCoordinate extends AbstractCoordinate {
 	
 	private final double latitude;

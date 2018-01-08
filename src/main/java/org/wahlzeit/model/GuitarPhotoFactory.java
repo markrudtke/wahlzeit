@@ -3,7 +3,14 @@ package org.wahlzeit.model;
 import java.util.logging.Logger;
 
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
+@PatternInstance(
+		patternName = "Abstract Factory",
+		participants = {
+				"ConcreteFactory"
+		}
+)
 public class GuitarPhotoFactory extends PhotoFactory{
 
 	private static final Logger log = Logger.getLogger(GuitarPhotoFactory.class.getName());

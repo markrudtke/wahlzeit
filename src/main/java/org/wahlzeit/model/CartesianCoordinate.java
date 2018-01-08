@@ -2,11 +2,25 @@ package org.wahlzeit.model;
 
 import java.util.HashMap;
 
+import org.wahlzeit.utils.PatternInstance;
+
 /**
  * @inv !Double.isInfinite(x) && !Double.isNaN(x)
  * 		&& !Double.isInfinite(y) && !Double.isNaN(y)
  * 		&& !Double.isInfinite(z) && !Double.isNaN(z)
  */
+@PatternInstance(
+		patternName = "Template Method",
+		participants = {
+				"ConcreteClass A"
+		}
+)
+/*@PatternInstance(
+		patternName = "Value Object",
+		participants = {
+				"ValueObject"
+		}
+)*/
 public class CartesianCoordinate extends AbstractCoordinate{
 	
 	private final double x;
