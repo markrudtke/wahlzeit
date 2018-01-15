@@ -78,23 +78,5 @@ public class GuitarPhotoFactory extends PhotoFactory{
 	public GuitarPhoto createPhoto(PhotoId id) {
 		return new GuitarPhoto(id);
 	}
-	
-	/**
-	 * Creates a new guitar photo with the specified brand, model and number of strings
-	 * 
-	 * @methodtype factory
-	 */
-	public GuitarPhoto createPhoto(String brand, String model, int noStrings) {
-		return new GuitarPhoto(brand, model, noStrings);
-	}
-	
-	/**
-	 * Creates a new guitar photo with the specified id, brand, model and number of strings
-	 * 
-	 * @methodtype factory
-	 */
-	public GuitarPhoto createPhoto(PhotoId id, String brand, String model, int noStrings) {
-		return new GuitarPhoto(id, brand, model, noStrings);
-	}
 
 }

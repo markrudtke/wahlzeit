@@ -3,10 +3,6 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.PatternInstance;
 import com.googlecode.objectify.annotation.Subclass;
 
-/**
- * @inv brand != null && model != null
- * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
- */
 @PatternInstance(
 		patternName = "Abstract Factory",
 		participants = {
@@ -16,16 +12,13 @@ import com.googlecode.objectify.annotation.Subclass;
 @Subclass
 public class GuitarPhoto extends Photo {
 
-	private String brand = "";
-	private String model = "";
-	private int noStrings;
+	private Guitar guitar = null;
 	
 	/**
 	 * @methodtype constructor
 	 */
 	public GuitarPhoto() {
 		super();
-		assertClassInvariants();
 	}
 	
 	/**
@@ -33,157 +26,48 @@ public class GuitarPhoto extends Photo {
 	 */
 	public GuitarPhoto(PhotoId myId) {
 		super(myId);
-		assertClassInvariants();
-	}
-	
-	/**
-	 * @pre brand != null && model != null
-	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
-	 * @methodtype constructor
-	 */
-	public GuitarPhoto(String brand, String model, int noStrings) {
-		super();
-		assertClassInvariants();
-		
-		AssertionUtil.assertIsNonNullArgument(brand);
-		AssertionUtil.assertIsNonNullArgument(model);
-		AssertionUtil.assertIsValidInt(noStrings);
-		
-		setGuitarPhoto(brand, model, noStrings);
-		
-		assertClassInvariants();
-	}
-	
-	/**
-	 * @pre brand != null && model != null
-	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
-	 * @methodtype constructor
-	 */
-	public GuitarPhoto(PhotoId myId, String brand, String model, int noStrings) {
-		super(myId);
-		assertClassInvariants();
-		
-		AssertionUtil.assertIsNonNullArgument(brand);
-		AssertionUtil.assertIsNonNullArgument(model);
-		AssertionUtil.assertIsValidInt(noStrings);
-		
-		setGuitarPhoto(brand, model, noStrings);
-		
-		assertClassInvariants();
 	}
 	
 	/**
 	 * @methodtype get
 	 */
-	public String getBrand() {
-		return brand;
+	public Guitar getGuitar() {
+		return guitar;
 	}
 	
-	/**
-	 * @methodtype get
-	 */
-	public String getModel() {
-		return model;
-	}
-	
-	/**
-	 * @methodtype get
-	 */
-	public int getNoStrings() {
-		return noStrings;
-	}
-	
-	/**
-	 * @pre brand != null
+	/**@pre guitar != null
 	 * @methodtype set
 	 */
-	public void setBrand(String brand) {
-		assertClassInvariants();
+	public void setGuitar(Guitar guitar) {
+		assertIsValidGuitar(guitar);
 		
-		AssertionUtil.assertIsNonNullArgument(brand);
-		
-		doSetBrand(brand);
-		
-		assertClassInvariants();
+		doSetGuitar(guitar);
+		doSetLocation();
 	}
 	
 	/**
 	 * @methodtype set
 	 * @methodproperty primitive
 	 */
-	private void doSetBrand(String brand) {
-		this.brand = brand;
-	}
-	
-	/**
-	 * @pres model != null
-	 * @methodtype set
-	 */
-	public void setModel(String model) {
-		assertClassInvariants();
-		
-		AssertionUtil.assertIsNonNullArgument(model);
-		
-		doSetModel(model);
-		
-		assertClassInvariants();
+	private void doSetGuitar(Guitar guitar) {
+		this.guitar = guitar;
 	}
 	
 	/**
 	 * @methodtype set
 	 * @methodproperty primitive
 	 */
-	private void doSetModel(String model) {
-		this.model = model;
-	}
-	
-	/**
-	 * @pre noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
-	 * @methodtype set
-	 */
-	public void setNoStrings(int noStrings) {
-		assertClassInvariants();
-		
-		AssertionUtil.assertIsValidInt(noStrings);
-		
-		doSetNoStrings(noStrings);
-		
-		assertClassInvariants();
-	}
-	
-	/**
-	 * @methodtype set
-	 * @methodproperty primitive
-	 */
-	private void doSetNoStrings(int noStrings) {
-		this.noStrings = noStrings;
-	}
-	
-	/**
-	 * @pre brand != null && model != null
-	 * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
-	 * @methodtype set
-	 */
-	public void setGuitarPhoto(String brand, String model, int noStrings) {
-		assertClassInvariants();
-		
-		AssertionUtil.assertIsNonNullArgument(brand);
-		AssertionUtil.assertIsNonNullArgument(model);
-		AssertionUtil.assertIsValidInt(noStrings);
-		
-		setBrand(brand);
-		setModel(model);
-		setNoStrings(noStrings);
-		
-		assertClassInvariants();
+	private void doSetLocation() {
+		loc = guitar.getLocation();
 	}
 	
 	/**
 	 * @methodtype assertion
 	 */
-	private void assertClassInvariants() {
-		AssertionUtil.assertIsNonNullArgument(brand);
-		AssertionUtil.assertIsNonNullArgument(model);
-		AssertionUtil.assertIsValidInt(noStrings);
+	protected static void assertIsValidGuitar(Guitar guitar) {
+		if(guitar == null) {
+			throw new IllegalArgumentException("A Guitar must not be null!");
+		}
 	}
+	
 }
