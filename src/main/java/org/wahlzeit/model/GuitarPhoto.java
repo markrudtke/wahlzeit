@@ -1,6 +1,8 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.utils.PatternInstance;
+
+import com.googlecode.objectify.annotation.Serialize;
 import com.googlecode.objectify.annotation.Subclass;
 
 @PatternInstance(
@@ -12,6 +14,7 @@ import com.googlecode.objectify.annotation.Subclass;
 @Subclass
 public class GuitarPhoto extends Photo {
 
+	@Serialize
 	private Guitar guitar = null;
 	
 	/**

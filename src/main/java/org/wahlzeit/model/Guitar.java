@@ -1,14 +1,19 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.services.DataObject;
+
+import com.googlecode.objectify.annotation.Entity;
+
 /**
  * @inv location != null && brand != null && model != null
  * 		&& noStrings <= Integer.MAX_VALUE && noStrings >= Integer.MIN_VALUE
  */
-public class Guitar {
+@Entity
+public class Guitar extends DataObject {
 
 	protected GuitarType guitarType = null;
 	
-	private Location location;
+	private Location location = new Location();
 	private String brand = "";
 	private String model = "";
 	private int noStrings;

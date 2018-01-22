@@ -95,7 +95,13 @@ public class GuitarType extends DataObject {
 	public boolean isSubtype(GuitarType guitarType) {
 		assertIsValidGuitarType(guitarType);
 		
+		if(!isSubtype()) {
+			return false;
+		}
 		if(superType == guitarType) {
+			return true;
+		}
+		if(superType.isSubtype(guitarType)) {
 			return true;
 		}
 		return false;
@@ -118,7 +124,10 @@ public class GuitarType extends DataObject {
 	public boolean isSupertype(GuitarType guitarType) {
 		assertIsValidGuitarType(guitarType);
 		
-		if(subTypes.contains(guitarType)) {
+		if(!isSupertype()) {
+			return false;
+		}
+		if(guitarType.isSubtype(this)) {
 			return true;
 		}
 		return false;

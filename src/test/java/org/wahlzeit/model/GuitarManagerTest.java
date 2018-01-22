@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -11,13 +13,9 @@ import org.wahlzeit.testEnvironmentProvider.SysConfigProvider;
 import org.wahlzeit.testEnvironmentProvider.UserServiceProvider;
 import org.wahlzeit.testEnvironmentProvider.UserSessionProvider;
 
-public class GuitarPhotoTest {
-	
-	PhotoId id = new PhotoId(1234);
-	GuitarPhoto p1 = new GuitarPhoto();
-	GuitarPhoto p2 = new GuitarPhoto(id);
-	Guitar g = new Guitar(new GuitarType("Ukulele"));
-	Location l = new Location("Nuremberg");
+public class GuitarManagerTest {
+
+	GuitarManager gm = GuitarManager.getInstance();
 	
 	@ClassRule
 	public static RuleChain ruleChain = RuleChain.
@@ -28,11 +26,18 @@ public class GuitarPhotoTest {
 		around(new UserSessionProvider());
 	
 	@Test
-	public void testSetGuitar() {
-		g.setLocation(l);
-		p2.setGuitar(g);
-		assertTrue(p2.getGuitar() == g);
-		assertTrue(p2.loc.getName() == "Nuremberg");
+	public void testCreateGuitar() {
+		HashMap<String, Guitar> guitars = gm.getGuitars();
+		assertTrue(guitars.size() == 0);
+		Guitar g1 = gm.createGuitar("Westerngitarre");
+		assertTrue(guitars.size() == 1);
+		assertTrue(guitars.containsKey("Westerngitarre"));
+		Guitar g2 = gm.createGuitar("Konzertgitarre");
+		assertTrue(guitars.size() == 2);
+		assertTrue(guitars.containsKey("Konzertgitarre"));
+		Guitar g3 = gm.createGuitar("Westerngitarre");
+		assertTrue(guitars.size() == 2);
+		assertTrue(g3.getType().getName() == "Westerngitarre");
 	}
 	
 }

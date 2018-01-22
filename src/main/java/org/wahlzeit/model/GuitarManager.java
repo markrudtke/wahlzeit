@@ -1,8 +1,9 @@
 package org.wahlzeit.model;
 
 import java.util.HashMap;
+import org.wahlzeit.services.ObjectManager;
 
-public class GuitarManager {
+public class GuitarManager extends ObjectManager {
 
 	private static final GuitarManager instance = new GuitarManager();
 	
@@ -20,6 +21,13 @@ public class GuitarManager {
 	 */
 	public static final GuitarManager getInstance() {
 		return instance;
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public HashMap<String, Guitar> getGuitars() {
+		return guitars;
 	}
 	
 	/**
