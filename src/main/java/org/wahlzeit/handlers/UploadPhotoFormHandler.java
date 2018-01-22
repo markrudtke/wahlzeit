@@ -23,8 +23,13 @@ package org.wahlzeit.handlers;
 import com.google.appengine.api.images.Image;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.CartesianCoordinate;
+import org.wahlzeit.model.Guitar;
+import org.wahlzeit.model.GuitarManager;
+import org.wahlzeit.model.GuitarPhoto;
 import org.wahlzeit.model.GuitarPhotoInstantiationException;
 import org.wahlzeit.model.GuitarPhotoManager;
+import org.wahlzeit.model.Location;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
@@ -79,7 +84,13 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			String fileName = us.getAsString(args, "fileName");
 			User user = (User) us.getClient();
 			Image uploadedImage = user.getUploadedImage();
-			Photo photo = pm.createPhoto(fileName, uploadedImage);
+			GuitarPhoto photo = (GuitarPhoto) pm.createPhoto(fileName, uploadedImage);
+			
+			GuitarManager gm = GuitarManager.getInstance();
+			Guitar g = gm.createGuitar("DEFAULT"); //TODO
+			g.setLocation(new Location("DEFAULT", CartesianCoordinate.getCoordinate(0, 0, 0)));//TODO
+			g.setGuitar("DEFAULT", "DEFAULT", 0);//TODO
+			photo.setGuitar(g);
 
 			user.addPhoto(photo);
 
