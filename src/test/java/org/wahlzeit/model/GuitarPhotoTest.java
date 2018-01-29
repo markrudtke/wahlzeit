@@ -29,7 +29,7 @@ public class GuitarPhotoTest {
 	
 	@Test
 	public void testSetGuitar() {
-		g.setLocation(l);
+		p2.loc = l;
 		p2.setGuitar(g);
 		assertTrue(p2.getGuitar() == g);
 		assertTrue(p2.loc.getName() == "Nuremberg");

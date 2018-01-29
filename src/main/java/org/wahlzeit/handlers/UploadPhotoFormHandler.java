@@ -80,17 +80,17 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 		}
 
 		try {
-			GuitarPhotoManager pm = (GuitarPhotoManager) GuitarPhotoManager.getInstance();
+			PhotoManager pm = (GuitarPhotoManager) GuitarPhotoManager.getInstance();
 			String fileName = us.getAsString(args, "fileName");
 			User user = (User) us.getClient();
 			Image uploadedImage = user.getUploadedImage();
-			GuitarPhoto photo = (GuitarPhoto) pm.createPhoto(fileName, uploadedImage);
+			Photo photo = ((GuitarPhotoManager) pm).createPhoto(fileName, uploadedImage);
 			
 			GuitarManager gm = GuitarManager.getInstance();
-			Guitar g = gm.createGuitar("DEFAULT"); //TODO
-			g.setLocation(new Location("DEFAULT", CartesianCoordinate.getCoordinate(0, 0, 0)));//TODO
-			g.setGuitar("DEFAULT", "DEFAULT", 0);//TODO
-			photo.setGuitar(g);
+			Guitar g = gm.createGuitar("DEFAULT");
+			g.setGuitar("DEFAULT", "DEFAULT", 0);
+			((GuitarPhoto) photo).setGuitar(g);
+			photo.loc = new Location("DEFAULT", CartesianCoordinate.getCoordinate(0, 0, 0));
 
 			user.addPhoto(photo);
 
@@ -110,8 +110,10 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 		} catch (GuitarPhotoInstantiationException ex) {
 			log.warning(LogBuilder.createSystemMessage().addException("creating guitar photo failed", ex).toString());
 			us.setMessage(config.getPhotoUploadFailed());
-		} 
-
+		} catch (Exception ex) {
+			log.warning(LogBuilder.createSystemMessage().addException("creating photo failed", ex).toString());
+			us.setMessage(config.getPhotoUploadFailed());
+		}
 		return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
 	}
 }

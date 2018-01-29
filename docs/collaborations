@@ -1,0 +1,48 @@
+public collaboration GuitarManagerGuitar {
+	public role GuitarManager {
+		public static final GuitarManager getInstance();
+		public Guitar createGuitar(String typeName) ;
+	}
+	
+	public role Guitar {
+	
+	}
+}
+
+public collaboration GuitarGuitarType {
+	public role Guitar {
+		public String getBrand();
+		public String getModel();
+		public int getNoStrings();
+		public void setBrand(String brand);
+		public void setModel(String model);
+		public void setNoStrings(int noStrings);
+	}
+	
+	public role GuitarType {
+		public void addSubType(GuitarType guitarType);
+		public boolean hasInstance(Guitar guitar);
+		public boolean isSubtype(GuitarType guitarType);
+		public boolean isSupertype(GuitarType guitarType);
+		public Guitar createInstance();
+	}
+}
+
+public class GuitarManager binds GuitarGuitarType.Guitar {
+	
+}
+	
+public class GuitarManager binds GuitarGuitarType.GuitarType {
+	
+}
+
+public collaboration GuitarPhotoGuitar {
+	public role GuitarPhoto {
+		public Guitar getGuitar();
+		public void setGuitar(Guitar guitar)
+	}
+	
+	public role Guitar {
+	
+	}
+}

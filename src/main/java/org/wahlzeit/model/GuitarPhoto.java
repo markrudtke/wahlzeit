@@ -15,7 +15,7 @@ import com.googlecode.objectify.annotation.Subclass;
 public class GuitarPhoto extends Photo {
 
 	@Serialize
-	private Guitar guitar = null;
+	private Guitar g = new Guitar(new GuitarType(""));
 	
 	/**
 	 * @methodtype constructor
@@ -35,7 +35,7 @@ public class GuitarPhoto extends Photo {
 	 * @methodtype get
 	 */
 	public Guitar getGuitar() {
-		return guitar;
+		return g;
 	}
 	
 	/**@pre guitar != null
@@ -45,7 +45,6 @@ public class GuitarPhoto extends Photo {
 		assertIsValidGuitar(guitar);
 		
 		doSetGuitar(guitar);
-		doSetLocation();
 	}
 	
 	/**
@@ -53,15 +52,7 @@ public class GuitarPhoto extends Photo {
 	 * @methodproperty primitive
 	 */
 	private void doSetGuitar(Guitar guitar) {
-		this.guitar = guitar;
-	}
-	
-	/**
-	 * @methodtype set
-	 * @methodproperty primitive
-	 */
-	private void doSetLocation() {
-		loc = guitar.getLocation();
+		this.g = guitar;
 	}
 	
 	/**

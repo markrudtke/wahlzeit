@@ -3,6 +3,7 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.PatternInstance;
 
 import com.google.appengine.api.images.Image;
+import com.googlecode.objectify.annotation.Subclass;
 
 @PatternInstance(
 		patternName = "Singleton",
@@ -10,7 +11,8 @@ import com.google.appengine.api.images.Image;
 				"Singleton"
 		}
 )
-public class GuitarPhotoManager extends PhotoManager{
+@Subclass
+public class GuitarPhotoManager extends PhotoManager {
 
 	protected static final GuitarPhotoManager instance = new GuitarPhotoManager();
 	

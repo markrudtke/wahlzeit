@@ -13,6 +13,8 @@ public class Location {
 	 */
 	public Location() {
 		assertClassInvariants();
+		
+		setCoordinate(CartesianCoordinate.getCoordinate(0, 0, 0));
 	}
 
 	/**
@@ -25,6 +27,7 @@ public class Location {
 		AssertionUtil.assertIsNonNullArgument(name);
 		
 		setName(name);
+		setCoordinate(CartesianCoordinate.getCoordinate(0, 0, 0));
 		
 		assertClassInvariants();
 	}

@@ -5,9 +5,12 @@ import java.util.Iterator;
 import java.util.Set;
 import org.wahlzeit.services.DataObject;
 
+import com.googlecode.objectify.annotation.Entity;
+
+@Entity
 public class GuitarType extends DataObject {
 	
-	private String name;
+	private String name = "";
 	
 	protected GuitarType superType = null;
 	protected Set<GuitarType> subTypes = new HashSet<GuitarType>();

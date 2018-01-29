@@ -11,9 +11,8 @@ import com.googlecode.objectify.annotation.Entity;
 @Entity
 public class Guitar extends DataObject {
 
-	protected GuitarType guitarType = null;
+	protected GuitarType gt = null;
 	
-	private Location location = new Location();
 	private String brand = "";
 	private String model = "";
 	private int noStrings;
@@ -25,28 +24,21 @@ public class Guitar extends DataObject {
 	public Guitar(GuitarType guitarType) {
 		assertIsValidGuitarType(guitarType);
 		
-		this.guitarType = guitarType;
+		gt = guitarType;
 	}
 	
 	/**
 	 * @methodtype get
 	 */
 	public GuitarType getType() {
-		return guitarType;
+		return gt;
 	}
 	
 	/**
 	 * @methodtype get
 	 */
 	public String getId() {
-		return guitarType.getName();
-	}
-	
-	/**
-	 * @methodtype get
-	 */
-	public Location getLocation() {
-		return location;
+		return gt.getName();
 	}
 	
 	/**
@@ -68,28 +60,6 @@ public class Guitar extends DataObject {
 	 */
 	public int getNoStrings() {
 		return noStrings;
-	}
-	
-	/**
-	 * @pre location != null
-	 * @methodtype set
-	 */
-	public void setLocation(Location location) {
-		assertClassInvariants();
-		
-		assertIsNonNullArgument(location);
-		
-		doSetLocation(location);
-		
-		assertClassInvariants();
-	}
-	
-	/**
-	 * @methodtype set
-	 * @methodproperty primitive
-	 */
-	private void doSetLocation(Location location) {
-		this.location = location;
 	}
 	
 	/**
@@ -181,7 +151,6 @@ public class Guitar extends DataObject {
 	 * @methodtype assertion
 	 */
 	private void assertClassInvariants() {
-		assertIsNonNullArgument(location);
 		AssertionUtil.assertIsNonNullArgument(brand);
 		AssertionUtil.assertIsNonNullArgument(model);
 		AssertionUtil.assertIsValidInt(noStrings);
@@ -191,17 +160,8 @@ public class Guitar extends DataObject {
 	 * @methodtype assertion
 	 */
 	protected static void assertIsValidGuitarType(GuitarType guitarType) {
-		if(guitarType== null) {
+		if(guitarType == null) {
 			throw new IllegalArgumentException("A GuitarType must not be null!");
-		}
-	}
-	
-	/**
-	 * @methodtype assertion
-	 */
-	private void assertIsNonNullArgument(Location location) {
-		if(location == null) {
-			throw new IllegalArgumentException("A Location must not be null!");
 		}
 	}
 	

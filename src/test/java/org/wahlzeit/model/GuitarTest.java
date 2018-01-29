@@ -50,12 +50,6 @@ public class GuitarTest {
 	}
 	
 	@Test
-	public void testGetLocation() {
-		g1.setLocation(new Location("Nuremberg"));
-		assertEquals("Nuremberg", g1.getLocation().getName());
-	}
-	
-	@Test
 	public void testGetBrand() {
 		assertEquals("Epiphone", g1.getBrand());
 	}
@@ -68,12 +62,6 @@ public class GuitarTest {
 	@Test
 	public void testGetNoStrings() {
 		assertEquals(7, g1.getNoStrings());
-	}
-	
-	@Test
-	public void testSetLocation() {
-		g1.setLocation(l);
-		assertEquals("Nuremberg", g1.getLocation().getName());
 	}
 	
 	@Test
